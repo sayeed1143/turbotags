@@ -1,39 +1,26 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
 export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
+  // 1. Try OpenRouter first
+  const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "google/gemini-pro", // Free tier available
+      messages: [{
+        role: "user",
+        content: `Generate tags and hashtags for a ${req.body.platform} video titled "${req.body.title}" (Niche: ${req.body.niche}). Respond in JSON format: { "tags": "comma,separated,tags", "hashtags": "#space #separated #hashtags" }`
+      }]
+    })
+  });
 
-    const { title, description, niche, platform } = req.body;
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  if (openRouterResponse.ok) {
+    const data = await openRouterResponse.json();
+    return res.status(200).json(JSON.parse(data.choices[0].message.content));
+  }
 
-    try {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-        
-        const prompt = `Generate tags and hashtags for a ${platform} video with the following details:
-        Title: ${title}
-        Description: ${description || 'No description provided'}
-        Niche: ${niche || 'General'}
-        
-        Please provide:
-        1. A comma-separated list of relevant tags
-        2. A space-separated list of relevant hashtags (with # prefix)
-        
-        Format your response as JSON: { "tags": "tag1, tag2, ...", "hashtags": "#hashtag1 #hashtag2 ..." }`;
-
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
-        
-        // Extract JSON from the response
-        const jsonStart = text.indexOf('{');
-        const jsonEnd = text.lastIndexOf('}') + 1;
-        const jsonResponse = JSON.parse(text.substring(jsonStart, jsonEnd));
-
-        res.status(200).json(jsonResponse);
-    } catch (error) {
-        console.error('Error calling Gemini API:', error);
-        res.status(500).json({ error: 'Failed to generate tags' });
-    }
+  // 2. Fallback to local JSON
+  const fallbackTags = require("./fallback-tags.json");
+  return res.status(200).json(fallbackTags);
 }
