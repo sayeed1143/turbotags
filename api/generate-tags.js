@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     Description: "${description}"
     Niche: "${niche}"
     Platform: "${platform}"
-    
+
     Provide the output strictly as a JSON object with two keys: "tags" (a single comma-separated string) and "hashtags" (a single space-separated string, each starting with #). Do NOT include any other text, markdown, or formatting outside the JSON object.
     Example: {"tags": "gaming highlights, esports, twitch moments, best plays", "hashtags": "#gaming #esports #twitch #highlights"}`;
 
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
         }
         const genAI = new GoogleGenerativeAI(geminiApiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Using the more stable model
-        
+
         console.log("Attempting with Gemini...");
         const result = await model.generateContent(prompt);
         const response = await result.response;
