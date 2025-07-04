@@ -1,5 +1,4 @@
-// Use dynamic import for Node.js compatibility
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+import fetch from 'node-fetch'; // Add this at the very top
 
 export default async function handler(req, res) {
   // Required CORS headers
@@ -7,16 +6,9 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST');
 
   try {
-    console.log('Request Body:', JSON.stringify(req.body)); // Debug input
-
-    // 1. Validate request
-    if (!req.body.title || !req.body.platform) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    // 2. Try OpenRouter API
-    const prompt = `Generate 10 tags and 5 hashtags for a ${req.body.platform} video about "${req.body.title}" (Niche: ${req.body.niche || 'general'}). Return as JSON: {"tags":"comma,separated,tags", "hashtags":"#space #separated #hashtags"}`;
-
+    console.log('Attempting OpenRouter API call...');
+    
+    // 1. Try OpenRouter API
     const openRouterResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -29,42 +21,29 @@ export default async function handler(req, res) {
         model: "google/gemini-pro",
         messages: [{
           role: "user",
-          content: prompt
+          content: `Generate tags for ${req.body.platform} video: "${req.body.title}" (Niche: ${req.body.niche}). Respond with JSON: { "tags": "tag1,tag2", "hashtags": "#tag1 #tag2" }`
         }]
       })
     });
 
-    console.log('OpenRouter Status:', openRouterResponse.status); // Debug status
-
     if (openRouterResponse.ok) {
       const data = await openRouterResponse.json();
-      const generatedContent = data.choices[0].message.content;
-      
-      try {
-        // Extract JSON from response
-        const jsonStart = generatedContent.indexOf('{');
-        const jsonEnd = generatedContent.lastIndexOf('}') + 1;
-        const jsonResponse = JSON.parse(generatedContent.substring(jsonStart, jsonEnd));
-        
-        return res.status(200).json(jsonResponse);
-      } catch (e) {
-        console.error('JSON Parse Error:', e);
-        // Continue to fallback
-      }
+      const generatedContent = JSON.parse(data.choices[0].message.content);
+      return res.status(200).json(generatedContent);
     }
 
-    // 3. Enhanced Fallback
+    // 2. Fallback to local JSON
     const fallbackTags = {
       politics: {
         youtube: {
-          tags: "delhi government, pollution policy, akash banerjee, environmental issues, indian politics",
-          hashtags: "#DelhiPollution #GovtPolicy #AkashBanerjee"
+          tags: "delhi government, pollution policy, akash banerjee",
+          hashtags: "#DelhiPollution #GovtPolicy"
         }
       },
       default: {
         youtube: {
           tags: "video,content,creator",
-          hashtags: "#video #content #creator"
+          hashtags: "#video #content"
         }
       }
     };
@@ -75,7 +54,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('API Error:', error);
     return res.status(500).json({ 
-      error: "Internal Server Error",
+      error: "Failed to generate tags",
       details: error.message 
     });
   }
