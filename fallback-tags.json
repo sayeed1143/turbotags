@@ -1,0 +1,32 @@
+{
+    "fallbackTags": {
+        "gaming": {
+            "youtube": {
+                "tags": ["gaming", "gameplay", "walkthrough", "letsplay", "pcgaming", "console", "twitch", "streamer", "esports", "videogames"],
+                "hashtags": ["#gaming", "#gamers", "#gamer", "#videogames", "#twitch", "#streamer", "#esports", "#pcgaming", "#console", "#letsplay"]
+            },
+            "instagram": {
+                "tags": ["gaming", "game", "gamer", "gamergirl", "gamerguy", "videogames", "twitch", "streamer", "esports", "gaminglife"],
+                "hashtags": ["#gaming", "#gamergirl", "#gamerguy", "#videogames", "#twitchstreamer", "#gamingcommunity", "#gamingsetup", "#gamingpc", "#console", "#esports"]
+            },
+            "tiktok": {
+                "tags": ["gaming", "game", "gamer", "twitch", "streamer", "clips", "montage", "fails", "win", "funny"],
+                "hashtags": ["#gaming", "#gamer", "#twitch", "#streamer", "#gamingclips", "#montage", "#fails", "#win", "#funny", "#fyp"]
+            }
+        },
+        "tech": {
+            "youtube": {
+                "tags": ["technology", "tech", "gadget", "review", "unboxing", "tutorial", "howto", "electronics", "smartphone", "laptop"],
+                "hashtags": ["#technology", "#tech", "#gadget", "#review", "#unboxing", "#tutorial", "#howto", "#electronics", "#smartphone", "#laptop"]
+            },
+            "instagram": {
+                "tags": ["technology", "tech", "gadget", "review", "unboxing", "tutorial", "howto", "electronics", "smartphone", "laptop"],
+                "hashtags": ["#technology", "#tech", "#gadget", "#review", "#unboxing", "#tutorial", "#howto", "#electronics", "#smartphone", "#laptop"]
+            },
+            "tiktok": {
+                "tags": ["tech", "technology", "gadget", "review", "hack", "tips", "tricks", "smartphone", "laptop", "future"],
+                "hashtags": ["#tech", "#technology", "#gadget", "#review", "#hack", "#tips", "#tricks", "#smartphone", "#laptop", "#futuretech"]
+            }
+        }
+    }
+}
