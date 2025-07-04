@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
         
         const prompt = `Generate 5-10 YouTube tags and 3-5 relevant hashtags for a ${platform} video.
         Details:
