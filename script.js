@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyAllBtn = document.getElementById('copy-all-btn');
     const platformTabs = document.querySelectorAll('.tab-btn');
     const titleInput = document.getElementById('video-title');
+    const nicheSelect = document.getElementById('niche-select');
     const tagsOutput = document.getElementById('tags-output');
     const hashtagsOutput = document.getElementById('hashtags-output');
     const resultsSection = document.getElementById('results-section');
@@ -18,12 +19,14 @@ document.addEventListener('DOMContentLoaded', function() {
             platformTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             currentPlatform = tab.dataset.platform;
+            updateTagDisplay();
         });
     });
 
     // Generate tags button click handler
     generateBtn.addEventListener('click', async () => {
         const title = titleInput.value.trim();
+        const niche = nicheSelect.value;
 
         if (!title) {
             alert('Please enter a title for your content');
@@ -35,23 +38,46 @@ document.addEventListener('DOMContentLoaded', function() {
         generateBtn.disabled = true;
 
         try {
-            // Simulate API call with timeout
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            const response = await fetch('/api/generate-tags', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title,
+                    niche: niche || '',
+                    platform: currentPlatform
+                })
+            });
+
+            const data = await response.json();
             
-            // Generate sample tags based on platform
-            const { tags, hashtags } = generateSampleTags(title, currentPlatform);
-            
-            // Display results
-            tagsOutput.textContent = tags;
-            hashtagsOutput.textContent = hashtags;
-            resultsSection.classList.remove('hidden');
-            resultsSection.scrollIntoView({ behavior: 'smooth' });
+            if (response.ok) {
+                displayResults(data.tags, data.hashtags);
+            } else {
+                // Fallback to local JSON if API fails
+                console.error('API Error:', data.error);
+                const fallbackTags = getFallbackTags(title, niche, currentPlatform);
+                displayResults(fallbackTags.tags, fallbackTags.hashtags);
+            }
         } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to generate tags. Please try again.');
+            console.error('Network Error:', error);
+            // Final fallback to local JSON
+            const fallbackTags = getFallbackTags(title, niche, currentPlatform);
+            displayResults(fallbackTags.tags, fallbackTags.hashtags);
         } finally {
             loadingSpinner.classList.add('hidden');
             generateBtn.disabled = false;
+        }
+    });
+
+    // Auto-detect niche when title changes
+    titleInput.addEventListener('input', () => {
+        if (!nicheSelect.value) {
+            const detectedNiche = detectNiche(titleInput.value);
+            if (detectedNiche) {
+                nicheSelect.value = detectedNiche;
+            }
         }
     });
 
@@ -59,7 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
     copyAllBtn.addEventListener('click', () => {
         const tags = tagsOutput.textContent;
         const hashtags = hashtagsOutput.textContent;
-        const allContent = `Tags:\n${tags}\n\nHashtags:\n${hashtags}`;
+        const allContent = currentPlatform === 'youtube' 
+            ? `Tags:\n${tags}\n\nHashtags:\n${hashtags}`
+            : `Hashtags:\n${hashtags}`;
 
         navigator.clipboard.writeText(allContent).then(() => {
             copyAllBtn.textContent = 'Copied!';
@@ -75,22 +103,79 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Helper function to generate sample tags
-    function generateSampleTags(title, platform) {
+    // Helper functions
+    function displayResults(tags, hashtags) {
+        updateTagDisplay(tags, hashtags);
+        resultsSection.classList.remove('hidden');
+        resultsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function updateTagDisplay(tags = '', hashtags = '') {
+        if (currentPlatform === 'youtube') {
+            tagsOutput.textContent = tags;
+            hashtagsOutput.textContent = hashtags;
+            document.querySelector('.tags-column').style.display = 'block';
+        } else {
+            // For Instagram/TikTok only show hashtags
+            hashtagsOutput.textContent = hashtags;
+            document.querySelector('.tags-column').style.display = 'none';
+        }
+    }
+
+    function detectNiche(title) {
+        const titleLower = title.toLowerCase();
+        const niches = {
+            gaming: ['game', 'gaming', 'playthrough', 'esports', 'twitch'],
+            tech: ['tech', 'technology', 'gadget', 'review', 'unboxing'],
+            fitness: ['workout', 'fitness', 'gym', 'exercise', 'training'],
+            beauty: ['makeup', 'beauty', 'skincare', 'cosmetic', 'hairstyle'],
+            cooking: ['recipe', 'cooking', 'food', 'meal', 'cook'],
+            travel: ['travel', 'vacation', 'destination', 'tourism', 'adventure'],
+            education: ['learn', 'tutorial', 'education', 'course', 'study'],
+            vlog: ['vlog', 'day in life', 'lifestyle', 'routine', 'daily']
+        };
+
+        for (const [niche, keywords] of Object.entries(niches)) {
+            if (keywords.some(keyword => titleLower.includes(keyword))) {
+                return niche;
+            }
+        }
+        return null;
+    }
+
+    function getFallbackTags(title, niche, platform) {
         const words = title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+        const nicheTags = getNicheTags(niche);
+        const platformTags = getPlatformTags(platform);
         
-        const platformTags = {
-            youtube: ['video', 'youtube', 'subscribe', 'content', 'creator'],
-            instagram: ['insta', 'instagram', 'photo', 'reel', 'story'],
-            tiktok: ['tiktok', 'viral', 'fyp', 'trending', 'foryou']
-        }[platform] || [];
-        
-        const allTags = [...new Set([...words, ...platformTags])].slice(0, 15);
-        const hashtags = allTags.map(tag => `#${tag.replace(/\s+/g, '')}`).slice(0, 10);
+        const allTags = [...new Set([...words, ...nicheTags, ...platformTags])];
+        const hashtags = allTags.map(tag => `#${tag.replace(/\s+/g, '')}`);
 
         return {
-            tags: allTags.join(', '),
-            hashtags: hashtags.join(' ')
+            tags: allTags.slice(0, 20).join(', '),
+            hashtags: hashtags.slice(0, 20).join(' ')
         };
+    }
+
+    function getNicheTags(niche) {
+        const tags = {
+            gaming: ['gaming', 'gameplay', 'walkthrough', 'letsplay', 'pcgaming', 'console', 'twitch', 'streamer', 'esports', 'videogames'],
+            tech: ['technology', 'tech', 'gadget', 'review', 'unboxing', 'tutorial', 'howto', 'electronics', 'smartphone', 'laptop'],
+            fitness: ['fitness', 'workout', 'gym', 'exercise', 'training', 'bodybuilding', 'cardio', 'yoga', 'health', 'wellness'],
+            beauty: ['beauty', 'makeup', 'skincare', 'cosmetics', 'hairstyle', 'glam', 'tutorial', 'review', 'aesthetic', 'selfcare'],
+            cooking: ['cooking', 'food', 'recipe', 'meal', 'chef', 'kitchen', 'tutorial', 'howto', 'baking', 'healthy'],
+            travel: ['travel', 'vacation', 'destination', 'tourism', 'adventure', 'wanderlust', 'explore', 'trip', 'holiday', 'journey'],
+            education: ['education', 'learn', 'tutorial', 'howto', 'study', 'knowledge', 'school', 'course', 'lesson', 'training'],
+            vlog: ['vlog', 'lifestyle', 'dayinlife', 'routine', 'daily', 'morning', 'evening', 'storytime', 'update', 'personal']
+        };
+        return niche ? tags[niche] || [] : [];
+    }
+
+    function getPlatformTags(platform) {
+        return {
+            youtube: ['youtube', 'video', 'subscribe', 'youtuber', 'content', 'creator', 'watch', 'view', 'like', 'comment'],
+            instagram: ['instagram', 'insta', 'photo', 'reel', 'story', 'post', 'grid', 'feed', 'igtv', 'explore'],
+            tiktok: ['tiktok', 'fyp', 'viral', 'trending', 'foryou', 'foryoupage', 'duet', 'stitch', 'tiktoker', 'creator']
+        }[platform];
     }
 });
