@@ -3,121 +3,1740 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Analytics Pro</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title id="pageTitle">TurboTags</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Generate highly optimized YouTube tags, Instagram hashtags, and TikTok hashtags instantly with our tool. Improve discoverability across platforms with AI-powered tag suggestions.">
+    <meta name="keywords" content="YouTube tags, Instagram hashtags, TikTok hashtags, social media tags, hashtag generator, YouTube SEO, Instagram growth, TikTok growth, free tag tool, multilingual tags">
+    <meta name="author" content="TurboTags Team">
+    <link rel="canonical" href="https://www.yourwebsite.com/turbotags">
+
+    <!-- Resource Preloading -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" as="style" crossorigin>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+        .container {
+            max-width: 90%;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .gradient-button {
+            background-image: linear-gradient(to right, #6366f1, #a855f7);
+            transition: all 0.3s ease;
+        }
+        .gradient-button:hover {
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .input-group label {
+            position: absolute;
+            top: 0.75rem;
+            left: 1rem;
+            color: #6b7280;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            z-index: 1;
+            background-color: #f3f4f6;
+            padding: 0 0.25rem;
+        }
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label,
+        .input-group textarea:focus + label,
+        .input-group textarea:not(:placeholder-shown) + label {
+            top: -0.75rem;
+            left: 0.5rem;
+            font-size: 0.75rem;
+            color: #4f46e5;
+            background-color: #fff;
+            padding: 0 0.25rem;
+            border-radius: 0.25rem;
+            z-index: 2;
+        }
+        .tags-display::-webkit-scrollbar {
+            width: 8px;
+        }
+        .tags-display::-webkit-scrollbar-track {
+            background: #e0e7ff;
+            border-radius: 10px;
+        }
+        .tags-display::-webkit-scrollbar-thumb {
+            background: #6366f1;
+            border-radius: 10px;
+        }
+        .tags-display::-webkit-scrollbar-thumb:hover {
+            background: #4f46e5;
+        }
+        .dropdown-select {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: #4b5563;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%239ca3af' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M7 8l3 3 3-3'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.5rem;
+        }
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e0e7ff;
+            color: #4f46e5;
+            padding: 0.3rem 0.7rem;
+            margin: 0.25rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            border: 1px solid #c7d2fe;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .tag-chip:hover {
+            background-color: #c7d2fe;
+            transform: translateY(-1px);
+        }
+        .tag-char-warning {
+            color: #d97706;
+        }
+        .tag-char-error {
+            color: #dc2626;
+        }
+        .total-char-warning {
+            color: #d97706;
+        }
+        .total-char-error {
+            color: #dc2626;
+        }
+        .faq-question {
+            cursor: pointer;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #4b5563;
+        }
+        .faq-question:hover {
+            background-color: #f9fafb;
+        }
+        .faq-answer {
+            padding: 1rem;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            display: none;
+            color: #6b7280;
+        }
+        .faq-question .icon {
+            transition: transform 0.3s ease;
+        }
+        .faq-question.active .icon {
+            transform: rotate(180deg);
+        }
+        .floating-tag {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            animation: floatAndFade 15s infinite ease-in-out;
+            pointer-events: none;
+            opacity: 0;
+            white-space: nowrap;
+            z-index: 0;
+        }
+        @keyframes floatAndFade {
+            0% {
+                transform: translateY(0) translateX(0) scale(0.8);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(20px) scale(1.2);
+                opacity: 0;
+            }
+        }
+        .floating-tag:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; animation-duration: 12s; }
+        .floating-tag:nth-child(2) { top: 70%; left: 80%; animation-delay: 2s; animation-duration: 15s; }
+        .floating-tag:nth-child(3) { top: 40%; left: 30%; animation-delay: 4s; animation-duration: 10s; }
+        .floating-tag:nth-child(4) { top: 10%; left: 60%; animation-delay: 6s; animation-duration: 13s; }
+        .floating-tag:nth-child(5) { top: 80%; left: 20%; animation-delay: 8s; animation-duration: 11s; }
+        .floating-tag:nth-child(6) { top: 55%; left: 90%; animation-delay: 1s; animation-duration: 14s; }
+        .floating-tag:nth-child(7) { top: 30%; left: 5%; animation-delay: 3s; animation-duration: 16s; }
+        .floating-tag:nth-child(8) { top: 60%; left: 45%; animation-delay: 5s; animation-duration: 12s; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #loadingIndicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background-color: #e0e7ff;
+            color: #4f46e5;
+            border-radius: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        #loadingIndicator .fas {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        .platform-tabs {
+            display: flex;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+        }
+        .platform-tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .platform-tab.active {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+        }
+        .platform-tab:hover:not(.active) {
+            color: #4f46e5;
+            background-color: #f5f3ff;
+        }
+        .platform-content {
+            display: none;
+        }
+        .platform-content.active {
+            display: block;
+        }
+    </style>
 </head>
-<body>
-    <div class="analytics-dashboard">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <h1>Social Analytics</h1>
-            <div class="time-filter">
-                <select>
-                    <option>Last 7 days</option>
-                    <option selected>Last 30 days</option>
-                    <option>Last 90 days</option>
-                </select>
-            </div>
-        </header>
+<body class="bg-gray-100 flex flex-col min-h-screen">
 
-        <!-- Platform Selector -->
-        <div class="platform-selector">
-            <button class="platform-tab active" data-platform="youtube">
-                <i class="fab fa-youtube"></i> YouTube
-            </button>
-            <button class="platform-tab" data-platform="instagram">
-                <i class="fab fa-instagram"></i> Instagram
-            </button>
-            <button class="platform-tab" data-platform="tiktok">
-                <i class="fab fa-tiktok"></i> TikTok
-            </button>
+    <!-- Header Section -->
+    <header class="bg-white shadow-md py-4">
+        <div class="container flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <h1 id="siteTitle" class="text-3xl font-bold text-gray-800">TurboTags</h1>
+            </div>
+            <nav class="space-x-4 flex items-center">
+                <a href="#how-it-works" class="text-gray-600 hover:text-indigo-600 font-medium" id="howItWorksNav">How It Works</a>
+                <a href="#features-section" class="text-gray-600 hover:text-indigo-600 font-medium" id="featuresNav">Features</a>
+                <a href="#testimonials" class="text-gray-600 hover:text-indigo-600 font-medium" id="testimonialsNav">Testimonials</a>
+                <a href="#faq-section" class="text-gray-600 hover:text-indigo-600 font-medium" id="faqNav">FAQ</a>
+                <span class="text-purple-600 font-medium cursor-default" id="premiumFeaturesLink">Premium Features Available</span>
+                <a href="https://ko-fi.com/ytseo1509" class="text-gray-600 hover:text-orange-500 font-medium flex items-center ml-4" target="_blank" rel="noopener noreferrer" id="koFiButton">
+                    <i class="fas fa-mug-hot mr-1"></i> <span id="buyMeCoffee">Buy Me a Coffee</span>
+                </a>
+            </nav>
         </div>
+    </header>
 
-        <!-- Key Metrics -->
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span>Total Views</span>
-                    <i class="fas fa-eye"></i>
-                </div>
-                <div class="metric-value">1.24M</div>
-                <div class="metric-change positive">
-                    <i class="fas fa-arrow-up"></i> 12.4% vs last period
-                </div>
-            </div>
-
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span>Engagement Rate</span>
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="metric-value">7.8%</div>
-                <div class="metric-change positive">
-                    <i class="fas fa-arrow-up"></i> 2.1% vs last period
-                </div>
-            </div>
-
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span>New Followers</span>
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <div class="metric-value">8,742</div>
-                <div class="metric-change negative">
-                    <i class="fas fa-arrow-down"></i> 1.3% vs last period
-                </div>
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-20 px-4 overflow-hidden">
+        <div class="container relative z-10 text-center">
+            <h2 id="heroHeading" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">Boost Your Social Media Discoverability</h2>
+            <p id="heroDescription" class="text-lg sm:text-xl mb-8 opacity-90 max-w-3xl mx-auto">Generate high-performing tags and hashtags for YouTube, Instagram, and TikTok to improve your content's reach.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#tag-generator-section" class="gradient-button text-white font-semibold py-3 px-8 rounded-full text-lg shadow-xl hover:shadow-2xl hover:scale-105 transform transition duration-300" id="getStartedNowBtn">
+                    Get Started Now
+                </a>
+                <a href="#features-section" class="bg-white text-indigo-700 font-semibold py-3 px-8 rounded-full text-lg shadow-xl hover:shadow-2xl hover:scale-105 transform transition duration-300" id="learnMoreBtn">
+                    Learn More
+                </a>
             </div>
         </div>
+        <!-- Floating Tags Visualization -->
+        <div class="absolute inset-0 z-0">
+            <span class="floating-tag" style="left: 10%; top: 20%;">#youtubetags</span>
+            <span class="floating-tag" style="left: 80%; top: 70%;">#instagramhashtags</span>
+            <span class="floating-tag" style="left: 30%; top: 40%;">#tiktokhashtags</span>
+            <span class="floating-tag" style="left: 10%; top: 60%;">#socialmediagrowth</span>
+            <span class="floating-tag" style="left: 60%; top: 10%;">#contentcreation</span>
+            <span class="floating-tag" style="left: 20%; top: 80%;">#viralcontent</span>
+            <span class="floating-tag" style="left: 90%; top: 55%;">#videomarketing</span>
+            <span class="floating-tag" style="left: 5%; top: 30%;">#growyouraccount</span>
+        </div>
+    </section>
 
-        <!-- Data Visualization -->
-        <div class="data-visualization">
-            <div class="chart-container">
-                <canvas id="performanceChart"></canvas>
+    <!-- Main Content Section -->
+    <main class="flex-grow container mt-8">
+        <!-- Tag Generator Section -->
+        <section id="tag-generator-section" class="bg-white p-8 rounded-xl shadow-lg mb-8">
+            <h2 id="generatorHeading" class="text-2xl font-semibold text-gray-700 mb-4">Social Media Tag Generator</h2>
+            <p id="generatorDescription" class="text-gray-600 mb-6">Generate optimized tags and hashtags for your content across different platforms.</p>
+
+            <!-- Platform Selection Tabs -->
+            <div class="platform-tabs">
+                <div class="platform-tab active" data-platform="youtube" id="youtubeTab">YouTube</div>
+                <div class="platform-tab" data-platform="instagram" id="instagramTab">Instagram</div>
+                <div class="platform-tab" data-platform="tiktok" id="tiktokTab">TikTok</div>
             </div>
+
+            <!-- YouTube Content -->
+            <div class="platform-content active" id="youtubeContent">
+                <!-- Language Settings -->
+                <div class="mb-6 flex flex-col sm:flex-row justify-start items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <!-- UI Language Selector -->
+                    <div class="w-full sm:w-auto">
+                        <label for="languageSelect" class="block text-sm font-medium text-gray-700 mb-1" id="uiLanguageLabel">Select UI Language</label>
+                        <select id="languageSelect" class="dropdown-select">
+                            <option value="en">English</option>
+                            <option value="hi">Hindi</option>
+                            <option value="te">Telugu</option>
+                            <option value="ur">Urdu</option>
+                            <option value="ru">Russian</option>
+                            <option value="ml">Malayalam</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                    <!-- Tag Output Language Selector -->
+                    <div class="w-full sm:w-auto">
+                        <label for="tagLanguageSelect" class="block text-sm font-medium text-gray-700 mb-1" id="tagOutputLanguageLabel">Tag Output Language</label>
+                        <select id="tagLanguageSelect" class="dropdown-select">
+                            <option value="en">English</option>
+                            <option value="hi">Hindi</option>
+                            <option value="te">Telugu</option>
+                            <option value="ur">Urdu</option>
+                            <option value="ru">Russian</option>
+                            <option value="ml">Malayalam</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Input for Keyword/Title -->
+                <div class="input-group mb-6">
+                    <input type="text" id="keywordInput" placeholder=" " class="peer block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                    <label for="keywordInput" class="absolute left-4 top-3 text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-indigo-600" id="keywordInputLabel">Enter video title or keyword...</label>
+                </div>
+
+                <!-- Advanced Options Panel -->
+                <div class="mb-6 border border-gray-200 rounded-lg overflow-hidden">
+                    <button id="toggleAdvancedOptions" class="w-full text-left p-4 bg-gray-50 hover:bg-gray-100 flex justify-between items-center text-gray-700 font-semibold text-lg focus:outline-none">
+                        <span id="advancedOptionsText">Advanced Options</span>
+                        <i class="fas fa-chevron-down icon transition-transform duration-300"></i>
+                    </button>
+                    <div id="advancedOptionsPanel" class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4 bg-white" style="display: none;">
+                        <div>
+                            <label for="videoTypeSelect" class="block text-sm font-medium text-gray-700 mb-1" id="videoTypeLabel">Video Type</label>
+                            <select id="videoTypeSelect" class="dropdown-select">
+                                <option value="general" id="videoTypeGeneral">General</option>
+                                <option value="shorts" id="videoTypeShorts">Shorts</option>
+                                <option value="long" id="videoTypeLong">Long-form</option>
+                                <option value="live_stream" id="videoTypeLiveStream">Live Stream</option>
+                                <option value="tutorial" id="videoTypeTutorial">Tutorial</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="toneSelect" class="block text-sm font-medium text-gray-700 mb-1" id="toneLabel">Tone</label>
+                            <select id="toneSelect" class="dropdown-select">
+                                <option value="neutral" id="toneNeutral">Neutral</option>
+                                <option value="emotional" id="toneEmotional">Emotional</option>
+                                <option value="funny" id="toneFunny">Funny</option>
+                                <option value="educational" id="toneEducational">Educational</option>
+                                <option value="tech" id="toneTech">Tech</option>
+                                <option value="dramatic" id="toneDramatic">Dramatic</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="nicheSelect" class="block text-sm font-medium text-gray-700 mb-1" id="nicheLabel">Niche (Optional)</label>
+                            <select id="nicheSelect" class="dropdown-select">
+                                <option value="" id="nichePlaceholder">Select a niche...</option>
+                                <option value="gaming" id="nicheGaming">Gaming</option>
+                                <option value="cooking" id="nicheCooking">Cooking</option>
+                                <option value="technology" id="nicheTechnology">Technology</option>
+                                <option value="fitness" id="nicheFitness">Fitness</option>
+                                <option value="travel" id="nicheTravel">Travel</option>
+                                <option value="education" id="nicheEducation">Education</option>
+                                <option value="music" id="nicheMusic">Music</option>
+                                <option value="business" id="nicheBusiness">Business</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="generateHashtags" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="generateHashtags" class="ml-2 block text-sm font-medium text-gray-700" id="generateHashtagsLabel">Generate Hashtags (e.g., #SEO)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="generateTagsBtn" class="w-full gradient-button text-white font-semibold py-3 px-6 rounded-lg text-lg shadow-md mb-6 hover:shadow-xl hover:scale-105 transform">
+                    Generate YouTube Tags
+                </button>
+            </div>
+
+            <!-- Instagram Content -->
+            <div class="platform-content" id="instagramContent">
+                <div class="mb-6 flex flex-col sm:flex-row justify-start items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <div class="w-full sm:w-auto">
+                        <label for="instagramLanguageSelect" class="block text-sm font-medium text-gray-700 mb-1">Hashtag Language</label>
+                        <select id="instagramLanguageSelect" class="dropdown-select">
+                            <option value="en">English</option>
+                            <option value="hi">Hindi</option>
+                            <option value="te">Telugu</option>
+                            <option value="ur">Urdu</option>
+                            <option value="ru">Russian</option>
+                            <option value="ml">Malayalam</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group mb-6">
+                    <input type="text" id="instagramKeywordInput" placeholder=" " class="peer block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                    <label for="instagramKeywordInput" class="absolute left-4 top-3 text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-indigo-600">Enter post topic or keyword...</label>
+                </div>
+
+                <div class="mb-6">
+                    <label for="instagramContentType" class="block text-sm font-medium text-gray-700 mb-1">Content Type</label>
+                    <select id="instagramContentType" class="dropdown-select">
+                        <option value="general">General</option>
+                        <option value="photo">Photo</option>
+                        <option value="reel">Reel</option>
+                        <option value="story">Story</option>
+                        <option value="igtv">IGTV</option>
+                    </select>
+                </div>
+
+                <button id="generateInstagramBtn" class="w-full gradient-button text-white font-semibold py-3 px-6 rounded-lg text-lg shadow-md mb-6 hover:shadow-xl hover:scale-105 transform">
+                    Generate Instagram Hashtags
+                </button>
+            </div>
+
+            <!-- TikTok Content -->
+            <div class="platform-content" id="tiktokContent">
+                <div class="mb-6 flex flex-col sm:flex-row justify-start items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <div class="w-full sm:w-auto">
+                        <label for="tiktokLanguageSelect" class="block text-sm font-medium text-gray-700 mb-1">Hashtag Language</label>
+                        <select id="tiktokLanguageSelect" class="dropdown-select">
+                            <option value="en">English</option>
+                            <option value="hi">Hindi</option>
+                            <option value="te">Telugu</option>
+                            <option value="ur">Urdu</option>
+                            <option value="ru">Russian</option>
+                            <option value="ml">Malayalam</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group mb-6">
+                    <input type="text" id="tiktokKeywordInput" placeholder=" " class="peer block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                    <label for="tiktokKeywordInput" class="absolute left-4 top-3 text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-indigo-600">Enter video topic or keyword...</label>
+                </div>
+
+                <div class="mb-6">
+                    <label for="tiktokContentType" class="block text-sm font-medium text-gray-700 mb-1">Content Type</label>
+                    <select id="tiktokContentType" class="dropdown-select">
+                        <option value="general">General</option>
+                        <option value="trending">Trending</option>
+                        <option value="educational">Educational</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="dance">Dance</option>
+                        <option value="challenge">Challenge</option>
+                    </select>
+                </div>
+
+                <button id="generateTiktokBtn" class="w-full gradient-button text-white font-semibold py-3 px-6 rounded-lg text-lg shadow-md mb-6 hover:shadow-xl hover:scale-105 transform">
+                    Generate TikTok Hashtags
+                </button>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="hidden text-center text-indigo-600 font-medium text-lg mb-6">
+                <i class="fas fa-spinner fa-spin mr-2"></i> <span id="generatingText">Generating...</span>
+            </div>
+
+            <!-- Generated Tags Output -->
+            <div id="tagsOutputSection" class="hidden">
+                <h3 id="generatedTagsHeading" class="text-xl font-semibold text-gray-700 mb-3">Your Tags:</h3>
+                <div id="generatedTags" class="tags-display flex flex-wrap bg-indigo-50 p-4 rounded-lg border border-indigo-200 min-h-24 max-h-80 overflow-y-auto text-indigo-800 text-base leading-relaxed mb-4">
+                    <!-- Tags will be displayed here as chips -->
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                    <button id="copyTagsBtn" class="w-full sm:w-1/2 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:shadow-xl hover:scale-105 transform">
+                        <i class="fas fa-copy mr-2"></i> <span id="copyTagsText">Copy Tags</span>
+                    </button>
+                    <button id="exportTagsBtn" class="w-full sm:w-1/2 bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:shadow-xl hover:scale-105 transform">
+                        <i class="fas fa-download mr-2"></i> <span id="exportTagsText">Export to .txt</span>
+                    </button>
+                </div>
+                <div class="flex justify-between items-center text-gray-600 text-sm mb-4">
+                    <span id="tagCount">Tags: 0</span>
+                    <span id="charCount">Characters: 0</span>
+                </div>
+                <button id="clearAllBtn" class="w-full bg-gray-400 hover:bg-gray-500 text-white font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:shadow-xl hover:scale-105 transform">
+                    <i class="fas fa-eraser mr-2"></i> <span id="clearAllText">Clear All</span>
+                </button>
+            </div>
+
+            <!-- Message Box for alerts/errors -->
+            <div id="messageBox" class="hidden mt-4 p-4 rounded-lg text-center" role="alert"></div>
+        </section>
+
+        <!-- Affiliate Banner 1 -->
+        <div class="my-8 p-4 bg-purple-100 rounded-lg text-purple-800 border border-purple-300 flex flex-col items-center justify-center text-center">
+            <h3 class="text-xl font-bold mb-2">📈 Grow Your Social Media Faster!</h3>
+            <p class="text-sm mb-3">Optimize your content and find powerful hashtags with top-tier social media tools.</p>
+            <a href="https://vidiq.com/TurboTags" target="_blank" rel="noopener noreferrer" 
+               class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300">
+               Learn More & Get Started!
+            </a>
+            <p class="text-xs text-purple-600 mt-2">*(Affiliate Link)*</p>
         </div>
 
-        <!-- Data Table -->
-        <div class="data-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Content</th>
-                        <th>Views</th>
-                        <th>Engagement</th>
-                        <th>CTR</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Product Launch Video</td>
-                        <td>324K</td>
-                        <td>8.2%</td>
-                        <td>4.7%</td>
-                        <td>Jun 15</td>
-                    </tr>
-                    <tr>
-                        <td>How-To Tutorial</td>
-                        <td>287K</td>
-                        <td>7.1%</td>
-                        <td>3.9%</td>
-                        <td>Jun 8</td>
-                    </tr>
-                    <tr>
-                        <td>Behind the Scenes</td>
-                        <td>198K</td>
-                        <td>6.5%</td>
-                        <td>3.2%</td>
-                        <td>Jun 1</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="bg-white p-8 rounded-xl shadow-lg mb-8">
+            <h2 id="howItWorksHeading" class="text-2xl font-semibold text-gray-700 mb-6 text-center">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="flex flex-col items-center text-center p-4">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-3xl font-bold mb-4 shadow-md">
+                        1
+                    </div>
+                    <h3 id="howItWorksStep1Title" class="text-xl font-semibold text-gray-800 mb-2">Enter Your Content Details</h3>
+                    <p id="howItWorksStep1Desc" class="text-gray-600">Provide your content topic or keywords. Select your platform and customize settings.</p>
+                </div>
+                <div class="flex flex-col items-center text-center p-4">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-3xl font-bold mb-4 shadow-md">
+                        2
+                    </div>
+                    <h3 id="howItWorksStep2Title" class="text-xl font-semibold text-gray-800 mb-2">AI Generates Optimal Tags</h3>
+                    <p id="howItWorksStep2Desc" class="text-gray-600">Our advanced AI analyzes your input and generates high-performing tags and hashtags.</p>
+                </div>
+                <div class="flex flex-col items-center text-center p-4">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-3xl font-bold mb-4 shadow-md">
+                        3
+                    </div>
+                    <h3 id="howItWorksStep3Title" class="text-xl font-semibold text-gray-800 mb-2">Boost Your Content's Reach</h3>
+                    <p id="howItWorksStep3Desc" class="text-gray-600">Copy the generated tags to your content and watch your discoverability increase.</p>
+                </div>
+            </div>
+        </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+        <!-- Key Features Section -->
+        <section id="features-section" class="bg-white p-8 rounded-xl shadow-lg mb-8">
+            <h2 id="featuresHeading" class="text-2xl font-semibold text-gray-700 mb-6 text-center">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex items-start p-4 bg-gray-50 rounded-lg shadow-sm">
+                    <i class="fas fa-globe text-indigo-600 text-3xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 id="featureMultiLanguageTitle" class="text-xl font-semibold text-gray-800 mb-1">Multi-platform Support</h3>
+                        <p id="featureMultiLanguageDesc" class="text-gray-600">Generate optimized tags for YouTube, Instagram, and TikTok from one tool.</p>
+                    </div>
+                </div>
+                <div class="flex items-start p-4 bg-gray-50 rounded-lg shadow-sm">
+                    <i class="fas fa-brain text-indigo-600 text-3xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 id="featureAiPoweredTitle" class="text-xl font-semibold text-gray-800 mb-1">AI-Powered Analysis</h3>
+                        <p id="featureAiPoweredDesc" class="text-gray-600">Our advanced AI understands content context and generates highly relevant tags.</p>
+                    </div>
+                </div>
+                <div class="flex items-start p-4 bg-gray-50 rounded-lg shadow-sm">
+                    <i class="fas fa-cogs text-indigo-600 text-3xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 id="featureCustomizableOptionsTitle" class="text-xl font-semibold text-gray-800 mb-1">Customizable Options</h3>
+                        <p id="featureCustomizableOptionsDesc" class="text-gray-600">Tailor tags to your content type, tone, and niche with advanced options.</p>
+                    </div>
+                </div>
+                <div class="flex items-start p-4 bg-gray-50 rounded-lg shadow-sm">
+                    <i class="fas fa-hashtag text-indigo-600 text-3xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 id="featureHashtagGenerationTitle" class="text-xl font-semibold text-gray-800 mb-1">Smart Hashtag Generation</h3>
+                        <p id="featureHashtagGenerationDesc" class="text-gray-600">Get the right mix of popular and niche hashtags for maximum reach.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="bg-white p-8 rounded-xl shadow-lg mb-8">
+            <h2 id="testimonialsHeading" class="text-2xl font-semibold text-gray-700 mb-6 text-center">What Users Are Saying</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                    <div class="w-16 h-16 mx-auto bg-indigo-200 text-indigo-800 rounded-full flex items-center justify-center text-3xl font-bold mb-4">JD</div>
+                    <p id="testimonial1Text" class="text-gray-700 italic mb-3">"This tool doubled my YouTube impressions within a week! The AI really understands what tags work best."</p>
+                    <p id="testimonial1Author" class="font-semibold text-gray-800">- John D.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                    <div class="w-16 h-16 mx-auto bg-indigo-200 text-indigo-800 rounded-full flex items-center justify-center text-3xl font-bold mb-4">SP</div>
+                    <p id="testimonial2Text" class="text-gray-700 italic mb-3">"The Instagram hashtag suggestions helped me grow my account by 30% in a month!"</p>
+                    <p id="testimonial2Author" class="font-semibold text-gray-800">- Sarah P.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                    <div class="w-16 h-16 mx-auto bg-indigo-200 text-indigo-800 rounded-full flex items-center justify-center text-3xl font-bold mb-4">MR</div>
+                    <p id="testimonial3Text" class="text-gray-700 italic mb-3">"My TikTok videos started getting way more views after using the hashtags from this tool."</p>
+                    <p id="testimonial3Author" class="font-semibold text-gray-800">- Mike R.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="bg-indigo-50 p-8 rounded-xl shadow-lg mb-8 text-center">
+            <h3 id="newsletterHeading" class="text-2xl font-semibold text-indigo-800 mb-4">Get Social Media Growth Tips</h3>
+            <p id="newsletterDescription" class="text-indigo-700 mb-6">Subscribe to our newsletter for weekly optimization tips, new feature updates, and exclusive content.</p>
+            <form action="#" method="POST" class="max-w-md mx-auto">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 outline-none" id="emailInputPlaceholder">
+                    <button type="submit" class="gradient-button text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-xl hover:scale-105 transform" id="subscribeBtn">
+                        Subscribe
+                    </button>
+                </div>
+                <p id="noSpamText" class="text-sm text-indigo-600 mt-2">We respect your privacy. Unsubscribe at any time.</p>
+            </form>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq-section" class="bg-white p-8 rounded-xl shadow-lg mb-8">
+            <h2 id="faqHeading" class="text-2xl font-semibold text-gray-700 mb-6 text-center">Frequently Asked Questions</h2>
+            <div class="divide-y divide-gray-200" id="faqContainer">
+                <!-- FAQ Items will be dynamically populated by JS for localization -->
+            </div>
+        </section>
+
+        <!-- Google AdSense Placeholder -->
+        <div class="my-8 bg-gray-200 min-h-24 flex items-center justify-center rounded-lg text-gray-500">
+            Google AdSense Placeholder
+        </div>
+
+        <!-- Footer Section -->
+        <footer id="footer" class="bg-gray-800 text-white py-8 mt-auto">
+            <div class="container flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <div class="flex flex-col items-center md:items-start mb-6 md:mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <h4 id="footerSiteName" class="text-xl font-bold">TurboTags</h4>
+                    <p id="footerTagline" class="text-gray-400 text-sm max-w-xs">The most advanced social media tag generator, helping creators improve discoverability since 2025.</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8 text-left mb-6 md:mb-0">
+                    <div>
+                        <h5 id="quickLinksHeading" class="font-semibold text-lg mb-3">Quick Links</h5>
+                        <ul class="space-y-2">
+                            <li><a href="#how-it-works" class="text-gray-400 hover:text-white text-sm" id="footerLinkHowItWorks">How It Works</a></li>
+                            <li><a href="#features-section" class="text-gray-400 hover:text-white text-sm" id="footerLinkFeatures">Features</a></li>
+                            <li><a href="#testimonials" class="text-gray-400 hover:text-white text-sm" id="footerLinkTestimonials">Testimonials</a></li>
+                            <li><a href="#faq-section" class="text-gray-400 hover:text-white text-sm" id="footerLinkFAQ">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 id="resourcesHeading" class="font-semibold text-lg mb-3">Resources</h5>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white text-sm" id="resourceYoutubeSEO">YouTube SEO Guide</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white text-sm" id="resourceInstagramGrowth">Instagram Growth</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white text-sm" id="resourceTikTokTips">TikTok Tips</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 id="legalHeading" class="font-semibold text-lg mb-3">Legal</h5>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white text-sm" id="legalTerms">Terms of Service</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white text-sm" id="legalPrivacy">Privacy Policy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white text-sm" id="legalCookie">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <p id="copyrightText" class="text-gray-400 text-sm mt-6 md:mt-0 text-center md:text-right">&copy; 2025 TurboTags. All rights reserved.</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "TurboTags",
+          "url": "https://www.yourwebsite.com/turbotags",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.yourwebsite.com/turbotags?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How many tags should I use on my YouTube video?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "YouTube allows up to 500 characters for all your tags combined. While there's no strict number, aim for 10-15 relevant tags that cover your video's topic, keywords, and related search terms. Our tool helps you stay within the character limit."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How many hashtags should I use on Instagram?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Instagram allows up to 30 hashtags per post. For best results, use a mix of popular (100k-500k posts) and niche hashtags (under 100k posts) relevant to your content."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What's the best hashtag strategy for TikTok?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "TikTok allows up to 100 characters in captions. Use 3-5 highly relevant hashtags, including a mix of trending and niche hashtags. Our tool helps you find the best combination for your content."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <script type="module">
+        // Register Service Worker (for PWA capabilities)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
+        // Firebase imports (for potential future features)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase variables (provided by Canvas environment)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null; 
+
+        let app;
+        let auth;
+        let db;
+        let userId = 'anonymous';
+
+        // UI Elements - General
+        const pageTitle = document.getElementById('pageTitle');
+        const siteTitle = document.getElementById('siteTitle');
+        const howItWorksNav = document.getElementById('howItWorksNav');
+        const featuresNav = document.getElementById('featuresNav');
+        const testimonialsNav = document.getElementById('testimonialsNav');
+        const faqNav = document.getElementById('faqNav');
+        const premiumFeaturesLink = document.getElementById('premiumFeaturesLink');
+        const koFiButton = document.getElementById('koFiButton');
+        const buyMeCoffee = document.getElementById('buyMeCoffee');
+        const heroHeading = document.getElementById('heroHeading');
+        const heroDescription = document.getElementById('heroDescription');
+        const getStartedNowBtn = document.getElementById('getStartedNowBtn');
+        const learnMoreBtn = document.getElementById('learnMoreBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const generatingText = document.getElementById('generatingText');
+        const messageBox = document.getElementById('messageBox');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const clearAllText = document.getElementById('clearAllText');
+
+        // Platform Tabs
+        const youtubeTab = document.getElementById('youtubeTab');
+        const instagramTab = document.getElementById('instagramTab');
+        const tiktokTab = document.getElementById('tiktokTab');
+        const youtubeContent = document.getElementById('youtubeContent');
+        const instagramContent = document.getElementById('instagramContent');
+        const tiktokContent = document.getElementById('tiktokContent');
+
+        // YouTube Elements
+        const generatorHeading = document.getElementById('generatorHeading');
+        const generatorDescription = document.getElementById('generatorDescription');
+        const uiLanguageLabel = document.getElementById('uiLanguageLabel');
+        const languageSelect = document.getElementById('languageSelect');
+        const tagOutputLanguageLabel = document.getElementById('tagOutputLanguageLabel');
+        const tagLanguageSelect = document.getElementById('tagLanguageSelect');
+        const keywordInput = document.getElementById('keywordInput');
+        const keywordInputLabel = document.getElementById('keywordInputLabel');
+        const toggleAdvancedOptionsBtn = document.getElementById('toggleAdvancedOptions');
+        const advancedOptionsText = document.getElementById('advancedOptionsText');
+        const advancedOptionsPanel = document.getElementById('advancedOptionsPanel');
+        const videoTypeLabel = document.getElementById('videoTypeLabel');
+        const videoTypeSelect = document.getElementById('videoTypeSelect');
+        const videoTypeGeneral = document.getElementById('videoTypeGeneral');
+        const videoTypeShorts = document.getElementById('videoTypeShorts');
+        const videoTypeLong = document.getElementById('videoTypeLong');
+        const videoTypeLiveStream = document.getElementById('videoTypeLiveStream');
+        const videoTypeTutorial = document.getElementById('videoTypeTutorial');
+        const toneLabel = document.getElementById('toneLabel');
+        const toneSelect = document.getElementById('toneSelect');
+        const toneNeutral = document.getElementById('toneNeutral');
+        const toneEmotional = document.getElementById('toneEmotional');
+        const toneFunny = document.getElementById('toneFunny');
+        const toneEducational = document.getElementById('toneEducational');
+        const toneTech = document.getElementById('toneTech');
+        const toneDramatic = document.getElementById('toneDramatic');
+        const nicheLabel = document.getElementById('nicheLabel');
+        const nicheSelect = document.getElementById('nicheSelect');
+        const nichePlaceholder = document.getElementById('nichePlaceholder');
+        const nicheGaming = document.getElementById('nicheGaming');
+        const nicheCooking = document.getElementById('nicheCooking');
+        const nicheTechnology = document.getElementById('nicheTechnology');
+        const nicheFitness = document.getElementById('nicheFitness');
+        const nicheTravel = document.getElementById('nicheTravel');
+        const nicheEducation = document.getElementById('nicheEducation');
+        const nicheMusic = document.getElementById('nicheMusic');
+        const nicheBusiness = document.getElementById('nicheBusiness');
+        const generateHashtagsCheckbox = document.getElementById('generateHashtags');
+        const generateHashtagsLabel = document.getElementById('generateHashtagsLabel');
+        const generateTagsBtn = document.getElementById('generateTagsBtn');
+        const tagsOutputSection = document.getElementById('tagsOutputSection');
+        const generatedTagsHeading = document.getElementById('generatedTagsHeading');
+        const generatedTagsDiv = document.getElementById('generatedTags');
+        const copyTagsBtn = document.getElementById('copyTagsBtn');
+        const copyTagsText = document.getElementById('copyTagsText');
+        const exportTagsBtn = document.getElementById('exportTagsBtn');
+        const exportTagsText = document.getElementById('exportTagsText');
+        const tagCountSpan = document.getElementById('tagCount');
+        const charCountSpan = document.getElementById('charCount');
+
+        // Instagram Elements
+        const instagramKeywordInput = document.getElementById('instagramKeywordInput');
+        const instagramLanguageSelect = document.getElementById('instagramLanguageSelect');
+        const instagramContentType = document.getElementById('instagramContentType');
+        const generateInstagramBtn = document.getElementById('generateInstagramBtn');
+
+        // TikTok Elements
+        const tiktokKeywordInput = document.getElementById('tiktokKeywordInput');
+        const tiktokLanguageSelect = document.getElementById('tiktokLanguageSelect');
+        const tiktokContentType = document.getElementById('tiktokContentType');
+        const generateTiktokBtn = document.getElementById('generateTiktokBtn');
+
+        // How It Works Section
+        const howItWorksHeading = document.getElementById('howItWorksHeading');
+        const howItWorksStep1Title = document.getElementById('howItWorksStep1Title');
+        const howItWorksStep1Desc = document.getElementById('howItWorksStep1Desc');
+        const howItWorksStep2Title = document.getElementById('howItWorksStep2Title');
+        const howItWorksStep2Desc = document.getElementById('howItWorksStep2Desc');
+        const howItWorksStep3Title = document.getElementById('howItWorksStep3Title');
+        const howItWorksStep3Desc = document.getElementById('howItWorksStep3Desc');
+
+        // Features Section
+        const featuresHeading = document.getElementById('featuresHeading');
+        const featureMultiLanguageTitle = document.getElementById('featureMultiLanguageTitle');
+        const featureMultiLanguageDesc = document.getElementById('featureMultiLanguageDesc');
+        const featureAiPoweredTitle = document.getElementById('featureAiPoweredTitle');
+        const featureAiPoweredDesc = document.getElementById('featureAiPoweredDesc');
+        const featureCustomizableOptionsTitle = document.getElementById('featureCustomizableOptionsTitle');
+        const featureCustomizableOptionsDesc = document.getElementById('featureCustomizableOptionsDesc');
+        const featureHashtagGenerationTitle = document.getElementById('featureHashtagGenerationTitle');
+        const featureHashtagGenerationDesc = document.getElementById('featureHashtagGenerationDesc');
+
+        // Testimonials Section
+        const testimonialsHeading = document.getElementById('testimonialsHeading');
+        const testimonial1Text = document.getElementById('testimonial1Text');
+        const testimonial1Author = document.getElementById('testimonial1Author');
+        const testimonial2Text = document.getElementById('testimonial2Text');
+        const testimonial2Author = document.getElementById('testimonial2Author');
+        const testimonial3Text = document.getElementById('testimonial3Text');
+        const testimonial3Author = document.getElementById('testimonial3Author');
+
+        // Newsletter Section
+        const newsletterHeading = document.getElementById('newsletterHeading');
+        const newsletterDescription = document.getElementById('newsletterDescription');
+        const emailInputPlaceholder = document.getElementById('emailInputPlaceholder');
+        const subscribeBtn = document.getElementById('subscribeBtn');
+        const noSpamText = document.getElementById('noSpamText');
+
+        // FAQ Section
+        const faqHeading = document.getElementById('faqHeading');
+        const faqContainer = document.getElementById('faqContainer');
+
+        // Footer Section
+        const footerSiteName = document.getElementById('footerSiteName');
+        const footerTagline = document.getElementById('footerTagline');
+        const quickLinksHeading = document.getElementById('quickLinksHeading');
+        const footerLinkHowItWorks = document.getElementById('footerLinkHowItWorks');
+        const footerLinkFeatures = document.getElementById('footerLinkFeatures');
+        const footerLinkTestimonials = document.getElementById('footerLinkTestimonials');
+        const footerLinkFAQ = document.getElementById('footerLinkFAQ');
+        const resourcesHeading = document.getElementById('resourcesHeading');
+        const resourceYoutubeSEO = document.getElementById('resourceYoutubeSEO');
+        const resourceInstagramGrowth = document.getElementById('resourceInstagramGrowth');
+        const resourceTikTokTips = document.getElementById('resourceTikTokTips');
+        const legalHeading = document.getElementById('legalHeading');
+        const legalTerms = document.getElementById('legalTerms');
+        const legalPrivacy = document.getElementById('legalPrivacy');
+        const legalCookie = document.getElementById('legalCookie');
+        const copyrightText = document.getElementById('copyrightText');
+
+        // Localization content
+        const translations = {
+            en: {
+                title: "TurboTags",
+                siteName: "TurboTags",
+                howItWorksNav: "How It Works",
+                featuresNav: "Features",
+                testimonialsNav: "Testimonials",
+                faqNav: "FAQ",
+                premiumFeatures: "Premium Features Available",
+                buyMeCoffee: "Buy Me a Coffee",
+                heroHeading: "Boost Your Social Media Discoverability",
+                heroDescription: "Generate high-performing tags and hashtags for YouTube, Instagram, and TikTok to improve your content's reach.",
+                getStartedNow: "Get Started Now",
+                learnMore: "Learn More",
+
+                // Tag Generator
+                generatorHeading: "Social Media Tag Generator",
+                generatorDescription: "Generate optimized tags and hashtags for your content across different platforms.",
+                uiLanguageLabel: "Select UI Language",
+                tagOutputLanguageLabel: "Tag Output Language",
+                keywordPlaceholder: "Enter video title or keyword...",
+                advancedOptions: "Advanced Options",
+                videoTypeLabel: "Video Type",
+                videoTypeGeneral: "General",
+                videoTypeShorts: "Shorts",
+                videoTypeLong: "Long-form",
+                videoTypeLiveStream: "Live Stream",
+                videoTypeTutorial: "Tutorial",
+                toneLabel: "Tone",
+                toneNeutral: "Neutral",
+                toneEmotional: "Emotional",
+                toneFunny: "Funny",
+                toneEducational: "Educational",
+                toneTech: "Tech",
+                toneDramatic: "Dramatic",
+                nicheLabel: "Niche (Optional)",
+                nichePlaceholder: "Select a niche...",
+                nicheGaming: "Gaming",
+                nicheCooking: "Cooking",
+                nicheTechnology: "Technology",
+                nicheFitness: "Fitness",
+                nicheTravel: "Travel",
+                nicheEducation: "Education",
+                nicheMusic: "Music",
+                nicheBusiness: "Business",
+                generateHashtags: "Generate Hashtags (e.g., #SEO)",
+                generateKeywordBtn: "Generate YouTube Tags",
+                
+                generating: "Generating...",
+                generatedTagsHeading: "Your Tags:",
+                copyTags: "Copy Tags",
+                exportTags: "Export to .txt",
+                clearAll: "Clear All",
+                tagCountText: "Tags: ",
+                charCountText: "Characters: ",
+                tagsCopied: "Tags copied to clipboard!",
+                errorGenerating: "Error generating tags: ",
+                errorCopying: "Failed to copy.",
+                invalidInput: "Please enter a title/keyword.",
+                noTagsToCopy: "No tags to copy!",
+                noTagsToExport: "No tags to export!",
+                tagsExported: "Tags exported to .txt file!",
+                allFieldsCleared: "All fields cleared!",
+                
+                howItWorksHeading: "How It Works",
+                howItWorksStep1Title: "Enter Your Content Details",
+                howItWorksStep1Desc: "Provide your content topic or keywords. Select your platform and customize settings.",
+                howItWorksStep2Title: "AI Generates Optimal Tags",
+                howItWorksStep2Desc: "Our advanced AI analyzes your input and generates high-performing tags and hashtags.",
+                howItWorksStep3Title: "Boost Your Content's Reach",
+                howItWorksStep3Desc: "Copy the generated tags to your content and watch your discoverability increase.",
+                featuresHeading: "Key Features",
+                featureMultiLanguageTitle: "Multi-platform Support",
+                featureMultiLanguageDesc: "Generate optimized tags for YouTube, Instagram, and TikTok from one tool.",
+                featureAiPoweredTitle: "AI-Powered Analysis",
+                featureAiPoweredDesc: "Our advanced AI understands content context and generates highly relevant tags.",
+                featureCustomizableOptionsTitle: "Customizable Options",
+                featureCustomizableOptionsDesc: "Tailor tags to your content type, tone, and niche with advanced options.",
+                featureHashtagGenerationTitle: "Smart Hashtag Generation",
+                featureHashtagGenerationDesc: "Get the right mix of popular and niche hashtags for maximum reach.",
+                testimonialsHeading: "What Users Are Saying",
+                testimonial1Text: '"This tool doubled my YouTube impressions within a week! The AI really understands what tags work best."',
+                testimonial1Author: "- John D.",
+                testimonial2Text: '"The Instagram hashtag suggestions helped me grow my account by 30% in a month!"',
+                testimonial2Author: "- Sarah P.",
+                testimonial3Text: '"My TikTok videos started getting way more views after using the hashtags from this tool."',
+                testimonial3Author: "- Mike R.",
+                newsletterHeading: "Get Social Media Growth Tips",
+                newsletterDescription: "Subscribe to our newsletter for weekly optimization tips, new feature updates, and exclusive content.",
+                emailInputPlaceholder: "Your email address",
+                subscribeBtn: "Subscribe",
+                noSpamText: "We respect your privacy. Unsubscribe at any time.",
+                faqHeading: "Frequently Asked Questions",
+                faq1Question: "How many tags should I use on my YouTube video?",
+                faq1Answer: "YouTube allows up to 500 characters for all your tags combined. While there's no strict number, aim for 10-15 relevant tags that cover your video's topic, keywords, and related search terms. Our tool helps you stay within the character limit.",
+                faq2Question: "How many hashtags should I use on Instagram?",
+                faq2Answer: "Instagram allows up to 30 hashtags per post. For best results, use a mix of popular (100k-500k posts) and niche hashtags (under 100k posts) relevant to your content.",
+                faq3Question: "What's the best hashtag strategy for TikTok?",
+                faq3Answer: "TikTok allows up to 100 characters in captions. Use 3-5 highly relevant hashtags, including a mix of trending and niche hashtags. Our tool helps you find the best combination for your content.",
+                footerSiteName: "TurboTags",
+                footerTagline: "The most advanced social media tag generator, helping creators improve discoverability since 2025.",
+                quickLinksHeading: "Quick Links",
+                footerLinkHowItWorks: "How It Works",
+                footerLinkFeatures: "Features",
+                footerLinkTestimonials: "Testimonials",
+                footerLinkFAQ: "FAQ",
+                resourcesHeading: "Resources",
+                resourceYoutubeSEO: "YouTube SEO Guide",
+                resourceInstagramGrowth: "Instagram Growth",
+                resourceTikTokTips: "TikTok Tips",
+                legalHeading: "Legal",
+                legalTerms: "Terms of Service",
+                legalPrivacy: "Privacy Policy",
+                legalCookie: "Cookie Policy",
+                copyrightText: "© 2025 TurboTags. All rights reserved."
+            },
+            hi: {
+                title: "टर्बोटैग्स",
+                siteName: "टर्बोटैग्स",
+                howItWorksNav: "यह कैसे काम करता है",
+                featuresNav: "विशेषताएं",
+                testimonialsNav: "प्रशंसापत्र",
+                faqNav: "अक्सर पूछे जाने वाले प्रश्न",
+                premiumFeatures: "प्रीमियम सुविधाएँ उपलब्ध",
+                buyMeCoffee: "मुझे कॉफी खरीदें",
+                heroHeading: "अपने सोशल मीडिया की खोज क्षमता बढ़ाएँ",
+                heroDescription: "अपने कंटेंट की पहुंच बढ़ाने के लिए YouTube, Instagram और TikTok के लिए उच्च-प्रदर्शन वाले टैग और हैशटैग जनरेट करें।",
+                getStartedNow: "अभी शुरू करें",
+                learnMore: "और जानें",
+
+                // Tag Generator
+                generatorHeading: "सोशल मीडिया टैग जनरेटर",
+                generatorDescription: "विभिन्न प्लेटफॉर्म के लिए अपने कंटेंट के लिए अनुकूलित टैग और हैशटैग जनरेट करें।",
+                uiLanguageLabel: "यूआई भाषा चुनें",
+                tagOutputLanguageLabel: "टैग आउटपुट भाषा",
+                keywordPlaceholder: "वीडियो शीर्षक या कीवर्ड दर्ज करें...",
+                advancedOptions: "उन्नत विकल्प",
+                videoTypeLabel: "वीडियो प्रकार",
+                videoTypeGeneral: "सामान्य",
+                videoTypeShorts: "शॉर्ट्स",
+                videoTypeLong: "लंबी-फॉर्म",
+                videoTypeLiveStream: "लाइव स्ट्रीम",
+                videoTypeTutorial: "ट्यूटोरियल",
+                toneLabel: "ट्यून",
+                toneNeutral: "न्यूट्रल",
+                toneEmotional: "भावनात्मक",
+                toneFunny: "मजेदार",
+                toneEducational: "शैक्षिक",
+                toneTech: "तकनीक",
+                toneDramatic: "नाटकीय",
+                nicheLabel: "श्रेणी (वैकल्पिक)",
+                nichePlaceholder: "एक श्रेणी चुनें...",
+                nicheGaming: "गेमिंग",
+                nicheCooking: "खाना पकाने",
+                nicheTechnology: "प्रौद्योगिकी",
+                nicheFitness: "फिटनेस",
+                nicheTravel: "यात्रा",
+                nicheEducation: "शिक्षा",
+                nicheMusic: "संगीत",
+                nicheBusiness: "व्यवसाय",
+                generateHashtags: "हैशटैग जनरेट करें (उदा. #SEO)",
+                generateKeywordBtn: "YouTube टैग जनरेट करें",
+                
+                generating: "जनरेट हो रहा है...",
+                generatedTagsHeading: "आपके टैग:",
+                copyTags: "टैग कॉपी करें",
+                exportTags: "टेक्स्ट में निर्यात करें",
+                clearAll: "सभी साफ़ करें",
+                tagCountText: "टैग: ",
+                charCountText: "वर्ण: ",
+                tagsCopied: "टैग क्लिपबोर्ड पर कॉपी हो गए!",
+                errorGenerating: "टैग जनरेट करने में त्रुटि: ",
+                errorCopying: "कॉपी करने में विफल।",
+                invalidInput: "कृपया एक शीर्षक/कीवर्ड दर्ज करें।",
+                noTagsToCopy: "कॉपी करने के लिए कोई टैग नहीं!",
+                noTagsToExport: "निर्यात करने के लिए कोई टैग नहीं!",
+                tagsExported: "टैग टेक्स्ट फ़ाइल में निर्यात किए गए!",
+                allFieldsCleared: "सभी फ़ील्ड साफ़ किए गए!",
+                
+                howItWorksHeading: "यह कैसे काम करता है",
+                howItWorksStep1Title: "अपने कंटेंट विवरण दर्ज करें",
+                howItWorksStep1Desc: "अपने कंटेंट का विषय या कीवर्ड प्रदान करें। अपने प्लेटफॉर्म का चयन करें और सेटिंग्स को अनुकूलित करें।",
+                howItWorksStep2Title: "एआई इष्टतम टैग जनरेट करता है",
+                howItWorksStep2Desc: "हमारा उन्नत एआई आपके इनपुट का विश्लेषण करता है और उच्च-प्रदर्शन वाले टैग और हैशटैग जनरेट करता है।",
+                howItWorksStep3Title: "अपने कंटेंट की पहुंच बढ़ाएँ",
+                howItWorksStep3Desc: "जनरेट किए गए टैग को अपने कंटेंट पर कॉपी करें और अपनी खोज क्षमता में वृद्धि देखें।",
+                featuresHeading: "मुख्य विशेषताएं",
+                featureMultiLanguageTitle: "बहु-प्लेटफॉर्म समर्थन",
+                featureMultiLanguageDesc: "एक ही टूल से YouTube, Instagram और TikTok के लिए अनुकूलित टैग जनरेट करें।",
+                featureAiPoweredTitle: "एआई-संचालित विश्लेषण",
+                featureAiPoweredDesc: "हमारा उन्नत एआई कंटेंट संदर्भ को समझता है और अत्यधिक प्रासंगिक टैग जनरेट करता है।",
+                featureCustomizableOptionsTitle: "अनुकूलन योग्य विकल्प",
+                featureCustomizableOptionsDesc: "उन्नत विकल्पों के साथ अपने कंटेंट प्रकार, टोन और श्रेणी के अनुसार टैग को अनुकूलित करें।",
+                featureHashtagGenerationTitle: "स्मार्ट हैशटैग जनरेशन",
+                featureHashtagGenerationDesc: "अधिकतम पहुंच के लिए लोकप्रिय और निचे हैशटैग का सही मिश्रण प्राप्त करें।",
+                testimonialsHeading: "उपयोगकर्ता क्या कह रहे हैं",
+                testimonial1Text: '"इस टूल ने एक सप्ताह के भीतर मेरे YouTube इंप्रेशन को दोगुना कर दिया! एआई वास्तव में समझता है कि कौन से टैग सबसे अच्छा काम करते हैं।"',
+                testimonial1Author: "- जॉन डी।",
+                testimonial2Text: '"Instagram हैशटैग सुझावों ने मुझे एक महीने में अपने अकाउंट को 30% तक बढ़ाने में मदद की!"',
+                testimonial2Author: "- सारा पी।",
+                testimonial3Text: '"इस टूल से हैशटैग का उपयोग करने के बाद मेरे TikTok वीडियो को बहुत अधिक विचार मिलने लगे।"',
+                testimonial3Author: "- माइक आर।",
+                newsletterHeading: "सोशल मीडिया ग्रोथ टिप्स प्राप्त करें",
+                newsletterDescription: "साप्ताहिक अनुकूलन युक्तियों, नई सुविधा अपडेट और विशेष सामग्री के लिए हमारे न्यूज़लेटर की सदस्यता लें।",
+                emailInputPlaceholder: "आपका ईमेल पता",
+                subscribeBtn: "सदस्यता लें",
+                noSpamText: "हम आपकी गोपनीयता का सम्मान करते हैं। किसी भी समय सदस्यता समाप्त करें।",
+                faqHeading: "अक्सर पूछे जाने वाले प्रश्न",
+                faq1Question: "मुझे अपने YouTube वीडियो पर कितने टैग का उपयोग करना चाहिए?",
+                faq1Answer: "YouTube आपके सभी टैग के लिए कुल 500 वर्णों की अनुमति देता है। जबकि कोई सख्त संख्या नहीं है, 10-15 प्रासंगिक टैग का लक्ष्य रखें जो आपके वीडियो के विषय, कीवर्ड और संबंधित खोज शब्दों को कवर करते हैं। हमारा टूल आपको वर्ण सीमा के भीतर रहने में मदद करता है।",
+                faq2Question: "मुझे Instagram पर कितने हैशटैग का उपयोग करना चाहिए?",
+                faq2Answer: "Instagram प्रति पोस्ट 30 हैशटैग की अनुमति देता है। सर्वोत्तम परिणामों के लिए, लोकप्रिय (100k-500k पोस्ट) और निचे हैशटैग (100k से कम पोस्ट) का मिश्रण उपयोग करें जो आपके कंटेंट से प्रासंगिक हों।",
+                faq3Question: "TikTok के लिए सबसे अच्छी हैशटैग रणनीति क्या है?",
+                faq3Answer: "TikTok कैप्शन में 100 वर्णों की अनुमति देता है। 3-5 अत्यधिक प्रासंगिक हैशटैग का उपयोग करें, जिसमें ट्रेंडिंग और निचे हैशटैग का मिश्रण शामिल हो। हमारा टूल आपको आपके कंटेंट के लिए सबसे अच्छा संयोजन खोजने में मदद करता है।",
+                footerSiteName: "टर्बोटैग्स",
+                footerTagline: "सबसे उन्नत सोशल मीडिया टैग जनरेटर, 2025 से निर्माताओं को खोज क्षमता में सुधार करने में मदद कर रहा है।",
+                quickLinksHeading: "त्वरित लिंक",
+                footerLinkHowItWorks: "यह कैसे काम करता है",
+                footerLinkFeatures: "विशेषताएं",
+                footerLinkTestimonials: "प्रशंसापत्र",
+                footerLinkFAQ: "अक्सर पूछे जाने वाले प्रश्न",
+                resourcesHeading: "संसाधन",
+                resourceYoutubeSEO: "YouTube एसईओ गाइड",
+                resourceInstagramGrowth: "Instagram ग्रोथ",
+                resourceTikTokTips: "TikTok टिप्स",
+                legalHeading: "कानूनी",
+                legalTerms: "सेवा की शर्तें",
+                legalPrivacy: "गोपनीयता नीति",
+                legalCookie: "कुकी नीति",
+                copyrightText: "© 2025 टर्बोटैग्स। सभी अधिकार सुरक्षित।"
+            }
+        };
+
+        let currentLanguage = 'en';
+        let currentTagLanguage = 'en';
+        let currentPlatform = 'youtube';
+
+        // Function to update UI text based on selected language
+        function updateUI() {
+            const lang = translations[currentLanguage];
+
+            // General UI
+            pageTitle.textContent = lang.title;
+            siteTitle.textContent = lang.siteName;
+            howItWorksNav.textContent = lang.howItWorksNav;
+            featuresNav.textContent = lang.featuresNav;
+            testimonialsNav.textContent = lang.testimonialsNav;
+            faqNav.textContent = lang.faqNav;
+            premiumFeaturesLink.textContent = lang.premiumFeatures;
+            koFiButton.querySelector('span').textContent = lang.buyMeCoffee;
+            heroHeading.textContent = lang.heroHeading;
+            heroDescription.textContent = lang.heroDescription;
+            getStartedNowBtn.textContent = lang.getStartedNow;
+            learnMoreBtn.textContent = lang.learnMore;
+            generatingText.textContent = lang.generating;
+            clearAllText.textContent = lang.clearAll;
+
+            // Tag Generator
+            generatorHeading.textContent = lang.generatorHeading;
+            generatorDescription.textContent = lang.generatorDescription;
+            uiLanguageLabel.textContent = lang.uiLanguageLabel;
+            tagOutputLanguageLabel.textContent = lang.tagOutputLanguageLabel;
+            keywordInputLabel.textContent = lang.keywordPlaceholder;
+            keywordInput.placeholder = lang.keywordPlaceholder;
+            advancedOptionsText.textContent = lang.advancedOptions;
+            videoTypeLabel.textContent = lang.videoTypeLabel;
+            videoTypeGeneral.textContent = lang.videoTypeGeneral;
+            videoTypeShorts.textContent = lang.videoTypeShorts;
+            videoTypeLong.textContent = lang.videoTypeLong;
+            videoTypeLiveStream.textContent = lang.videoTypeLiveStream;
+            videoTypeTutorial.textContent = lang.videoTypeTutorial;
+            toneLabel.textContent = lang.toneLabel;
+            toneNeutral.textContent = lang.toneNeutral;
+            toneEmotional.textContent = lang.toneEmotional;
+            toneFunny.textContent = lang.toneFunny;
+            toneEducational.textContent = lang.toneEducational;
+            toneTech.textContent = lang.toneTech;
+            toneDramatic.textContent = lang.toneDramatic;
+            nicheLabel.textContent = lang.nicheLabel;
+            nichePlaceholder.textContent = lang.nichePlaceholder;
+            nicheGaming.textContent = lang.nicheGaming;
+            nicheCooking.textContent = lang.nicheCooking;
+            nicheTechnology.textContent = lang.nicheTechnology;
+            nicheFitness.textContent = lang.nicheFitness;
+            nicheTravel.textContent = lang.nicheTravel;
+            nicheEducation.textContent = lang.nicheEducation;
+            nicheMusic.textContent = lang.nicheMusic;
+            nicheBusiness.textContent = lang.nicheBusiness;
+            generateHashtagsLabel.textContent = lang.generateHashtags;
+            generateTagsBtn.textContent = lang.generateKeywordBtn;
+            generatedTagsHeading.textContent = lang.generatedTagsHeading;
+            copyTagsText.textContent = lang.copyTags;
+            exportTagsText.textContent = lang.exportTags;
+            
+            // Update tag and character counts
+            updateTagAndCharCount();
+
+            // How It Works Section
+            howItWorksHeading.textContent = lang.howItWorksHeading;
+            howItWorksStep1Title.textContent = lang.howItWorksStep1Title;
+            howItWorksStep1Desc.textContent = lang.howItWorksStep1Desc;
+            howItWorksStep2Title.textContent = lang.howItWorksStep2Title;
+            howItWorksStep2Desc.textContent = lang.howItWorksStep2Desc;
+            howItWorksStep3Title.textContent = lang.howItWorksStep3Title;
+            howItWorksStep3Desc.textContent = lang.howItWorksStep3Desc;
+
+            // Features Section
+            featuresHeading.textContent = lang.featuresHeading;
+            featureMultiLanguageTitle.textContent = lang.featureMultiLanguageTitle;
+            featureMultiLanguageDesc.textContent = lang.featureMultiLanguageDesc;
+            featureAiPoweredTitle.textContent = lang.featureAiPoweredTitle;
+            featureAiPoweredDesc.textContent = lang.featureAiPoweredDesc;
+            featureCustomizableOptionsTitle.textContent = lang.featureCustomizableOptionsTitle;
+            featureCustomizableOptionsDesc.textContent = lang.featureCustomizableOptionsDesc;
+            featureHashtagGenerationTitle.textContent = lang.featureHashtagGenerationTitle;
+            featureHashtagGenerationDesc.textContent = lang.featureHashtagGenerationDesc;
+
+            // Testimonials Section
+            testimonialsHeading.textContent = lang.testimonialsHeading;
+            testimonial1Text.textContent = lang.testimonial1Text;
+            testimonial1Author.textContent = lang.testimonial1Author;
+            testimonial2Text.textContent = lang.testimonial2Text;
+            testimonial2Author.textContent = lang.testimonial2Author;
+            testimonial3Text.textContent = lang.testimonial3Text;
+            testimonial3Author.textContent = lang.testimonial3Author;
+
+            // Newsletter Section
+            newsletterHeading.textContent = lang.newsletterHeading;
+            newsletterDescription.textContent = lang.newsletterDescription;
+            emailInputPlaceholder.placeholder = lang.emailInputPlaceholder;
+            subscribeBtn.textContent = lang.subscribeBtn;
+            noSpamText.textContent = lang.noSpamText;
+
+            // FAQ Section
+            faqHeading.textContent = lang.faqHeading;
+            renderFAQ(lang);
+
+            // Footer Section
+            footerSiteName.textContent = lang.footerSiteName;
+            footerTagline.textContent = lang.footerTagline;
+            quickLinksHeading.textContent = lang.quickLinksHeading;
+            footerLinkHowItWorks.textContent = lang.footerLinkHowItWorks;
+            footerLinkFeatures.textContent = lang.footerLinkFeatures;
+            footerLinkTestimonials.textContent = lang.footerLinkTestimonials;
+            footerLinkFAQ.textContent = lang.footerLinkFAQ;
+            resourcesHeading.textContent = lang.resourcesHeading;
+            resourceYoutubeSEO.textContent = lang.resourceYoutubeSEO;
+            resourceInstagramGrowth.textContent = lang.resourceInstagramGrowth;
+            resourceTikTokTips.textContent = lang.resourceTikTokTips;
+            legalHeading.textContent = lang.legalHeading;
+            legalTerms.textContent = lang.legalTerms;
+            legalPrivacy.textContent = lang.legalPrivacy;
+            legalCookie.textContent = lang.legalCookie;
+            copyrightText.textContent = lang.copyrightText;
+        }
+
+        // Initialize Firebase and Auth
+        async function initializeFirebaseAndAuth() {
+            try {
+                if (Object.keys(firebaseConfig).length > 0) {
+                    app = initializeApp(firebaseConfig);
+                    auth = getAuth(app);
+                    db = getFirestore(app);
+
+                    onAuthStateChanged(auth, (user) => {
+                        if (user) {
+                            userId = user.uid;
+                            console.log("Firebase Auth State Changed: User logged in, UID:", userId);
+                        } else {
+                            userId = 'anonymous';
+                            console.log("Firebase Auth State Changed: No user logged in.");
+                        }
+                    });
+
+                    if (!auth.currentUser) {
+                        if (initialAuthToken) {
+                            try {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                                console.log("Signed in with custom token.");
+                            } catch (error) {
+                                console.error("Custom token sign-in failed:", error);
+                                await signInAnonymously(auth);
+                                console.log("Signed in anonymously after custom token failure.");
+                            }
+                        } else {
+                            await signInAnonymously(auth);
+                            console.log("Signed in anonymously.");
+                        }
+                    }
+                    userId = auth.currentUser?.uid || crypto.randomUUID();
+                    console.log("Firebase initialization attempts complete. Current User ID:", userId);
+
+                } else {
+                    console.warn("Firebase config not provided. Running without Firebase features.");
+                }
+            } catch (error) {
+                console.error("Error initializing Firebase or signing in (outer catch):", error);
+                showMessage(`Error initializing Firebase: ${error.message}`, 'bg-red-100 border-red-400 text-red-700');
+            }
+        }
+
+        // Function to display messages to the user
+        function showMessage(message, type = 'bg-blue-100 border-blue-400 text-blue-700') {
+            messageBox.textContent = message;
+            messageBox.className = `mt-4 p-4 rounded-lg border ${type} block`;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 5000);
+        }
+
+        // Function to control loading state and button disability
+        function setLoadingState(isLoading, generateBtnId) {
+            const button = document.getElementById(generateBtnId);
+            if (isLoading) {
+                loadingIndicator.classList.remove('hidden');
+                button.disabled = true;
+                button.classList.add('opacity-50', 'cursor-not-allowed');
+                tagsOutputSection.classList.add('hidden');
+            } else {
+                loadingIndicator.classList.add('hidden');
+                button.disabled = false;
+                button.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Function to call AI API (Gemini is used in the backend)
+        async function callGeminiAPI(prompt) {
+            console.log("Calling Gemini API with prompt:", prompt);
+            const TIMEOUT_DURATION = 30000; // 30 seconds timeout
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Canvas environment will provide this at runtime for gemini-2.0-flash - DO NOT CHANGE THIS!
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                console.log("API URL:", apiUrl);
+                console.log("Request Payload:", JSON.stringify(payload));
+
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => {
+                    controller.abort();
+                    console.warn("API request timed out after", TIMEOUT_DURATION / 1000, "seconds.");
+                }, TIMEOUT_DURATION);
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("API Error Response:", errorData);
+                    throw new Error(`API error: ${response.status} ${response.statusText} - ${errorData.error?.message || 'Unknown API error'}`);
+                }
+
+                const result = await response.json();
+                console.log("API Success Response:", result);
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    return text;
+                } else {
+                    throw new Error("No content received from AI API or unexpected response structure.");
+                }
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    throw new Error("API request timed out. Please try again. The AI might be busy.");
+                } else {
+                    throw error;
+                }
+            }
+        }
+
+        // Function to update tag and character count with warnings
+        function updateTagAndCharCount(tagsArray = []) {
+            let totalCharCount = 0;
+            let currentTagsText = '';
+
+            if (tagsArray.length > 0) {
+                currentTagsText = tagsArray.join(', ');
+                totalCharCount = currentTagsText.length;
+            } else {
+                const tagsFromChips = Array.from(generatedTagsDiv.children).map(chip => chip.textContent.trim());
+                currentTagsText = tagsFromChips.join(', ');
+                totalCharCount = currentTagsText.length;
+                tagsArray = tagsFromChips;
+            }
+            
+            tagCountSpan.textContent = `${translations[currentLanguage].tagCountText}${tagsArray.length}`;
+            charCountSpan.textContent = `${translations[currentLanguage].charCountText}${totalCharCount}`;
+
+            charCountSpan.classList.remove('total-char-warning', 'total-char-error');
+            if (totalCharCount > 500) {
+                charCountSpan.classList.add('total-char-error');
+            } else if (totalCharCount > 400) {
+                charCountSpan.classList.add('total-char-warning');
+            }
+        }
+
+        // Render tags as chips
+        function renderTagsAsChips(tagsString) {
+            generatedTagsDiv.innerHTML = '';
+            const tags = tagsString.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+
+            tags.forEach(tag => {
+                const tagChip = document.createElement('span');
+                tagChip.className = 'tag-chip';
+                tagChip.textContent = tag;
+                generatedTagsDiv.appendChild(tagChip);
+            });
+            updateTagAndCharCount(tags);
+        }
+
+        // Generate YouTube tags from keyword/title
+        async function generateYouTubeTags() {
+            showMessage('', 'hidden');
+            const keyword = keywordInput.value.trim();
+            if (!keyword) {
+                showMessage(translations[currentLanguage].invalidInput, 'bg-yellow-100 border-yellow-400 text-yellow-700');
+                return;
+            }
+            setLoadingState(true, 'generateTagsBtn');
+
+            const videoType = videoTypeSelect.value;
+            const tone = toneSelect.value;
+            const niche = nicheSelect.value;
+            const outputLanguage = tagLanguageSelect.value;
+            const includeHashtags = generateHashtagsCheckbox.checked;
+
+            let prompt = `Generate a comma-separated list of 15-20 highly relevant YouTube tags for a video with the title/keyword: "${keyword}".`;
+            prompt += ` The video type is "${videoType}". The desired tone is "${tone}".`;
+            if (niche) {
+                prompt += ` The niche/topic is "${niche}".`;
+            }
+            prompt += ` Ensure the tags are in ${outputLanguage} and are optimized for discoverability.`;
+            if (includeHashtags) {
+                prompt += ` Include 5-7 relevant hashtags at the end of the list, ensuring they start with '#'.`;
+            }
+            prompt += ` Example: "youtube seo, video tags, how to get views${includeHashtags ? ', #SEO, #YouTubeTips' : ''}"`;
+
+            console.log("Attempting to generate YouTube tags...");
+
+            try {
+                const tags = await callGeminiAPI(prompt);
+                if (tags) {
+                    renderTagsAsChips(tags);
+                    tagsOutputSection.classList.remove('hidden');
+                    console.log("YouTube tags generated and displayed.");
+                } else {
+                    showMessage("AI did not return any tags.", 'bg-yellow-100 border-yellow-400 text-yellow-700');
+                }
+            } catch (error) {
+                console.error("Error generating YouTube tags:", error);
+                showMessage(`${translations[currentLanguage].errorGenerating} ${error.message}`, 'bg-red-100 border-red-400 text-red-700');
+            } finally {
+                setLoadingState(false, 'generateTagsBtn');
+            }
+        }
+
+        // Generate Instagram hashtags
+        async function generateInstagramHashtags() {
+            showMessage('', 'hidden');
+            const keyword = instagramKeywordInput.value.trim();
+            if (!keyword) {
+                showMessage(translations[currentLanguage].invalidInput, 'bg-yellow-100 border-yellow-400 text-yellow-700');
+                return;
+            }
+            setLoadingState(true, 'generateInstagramBtn');
+
+            const contentType = instagramContentType.value;
+            const outputLanguage = instagramLanguageSelect.value;
+
+            let prompt = `Generate a comma-separated list of 20-30 highly relevant Instagram hashtags for a post about "${keyword}".`;
+            prompt += ` The content type is "${contentType}".`;
+            prompt += ` Ensure the hashtags are in ${outputLanguage} and include a mix of popular (100k-500k posts) and niche (under 100k posts) hashtags.`;
+            prompt += ` Example: "#instagood, #photooftheday, #${keyword.toLowerCase().replace(/\s+/g, '')}, #socialmedia"`;
+
+            console.log("Attempting to generate Instagram hashtags...");
+
+            try {
+                const hashtags = await callGeminiAPI(prompt);
+                if (hashtags) {
+                    renderTagsAsChips(hashtags);
+                    tagsOutputSection.classList.remove('hidden');
+                    console.log("Instagram hashtags generated and displayed.");
+                } else {
+                    showMessage("AI did not return any hashtags.", 'bg-yellow-100 border-yellow-400 text-yellow-700');
+                }
+            } catch (error) {
+                console.error("Error generating Instagram hashtags:", error);
+                showMessage(`${translations[currentLanguage].errorGenerating} ${error.message}`, 'bg-red-100 border-red-400 text-red-700');
+            } finally {
+                setLoadingState(false, 'generateInstagramBtn');
+            }
+        }
+
+        // Generate TikTok hashtags
+        async function generateTikTokHashtags() {
+            showMessage('', 'hidden');
+            const keyword = tiktokKeywordInput.value.trim();
+            if (!keyword) {
+                showMessage(translations[currentLanguage].invalidInput, 'bg-yellow-100 border-yellow-400 text-yellow-700');
+                return;
+            }
+            setLoadingState(true, 'generateTiktokBtn');
+
+            const contentType = tiktokContentType.value;
+            const outputLanguage = tiktokLanguageSelect.value;
+
+            let prompt = `Generate a comma-separated list of 5-10 highly relevant TikTok hashtags for a video about "${keyword}".`;
+            prompt += ` The content type is "${contentType}".`;
+            prompt += ` Ensure the hashtags are in ${outputLanguage} and include a mix of trending and niche hashtags.`;
+            prompt += ` Example: "#fyp, #foryou, #${keyword.toLowerCase().replace(/\s+/g, '')}, #viral"`;
+
+            console.log("Attempting to generate TikTok hashtags...");
+
+            try {
+                const hashtags = await callGeminiAPI(prompt);
+                if (hashtags) {
+                    renderTagsAsChips(hashtags);
+                    tagsOutputSection.classList.remove('hidden');
+                    console.log("TikTok hashtags generated and displayed.");
+                } else {
+                    showMessage("AI did not return any hashtags.", 'bg-yellow-100 border-yellow-400 text-yellow-700');
+                }
+            } catch (error) {
+                console.error("Error generating TikTok hashtags:", error);
+                showMessage(`${translations[currentLanguage].errorGenerating} ${error.message}`, 'bg-red-100 border-red-400 text-red-700');
+            } finally {
+                setLoadingState(false, 'generateTiktokBtn');
+            }
+        }
+
+        // Universal copy function
+        function copyTextToClipboard(text, successMessage, errorMessage) {
+            if (!text) {
+                showMessage(errorMessage, 'bg-yellow-100 border-yellow-400 text-yellow-700');
+                return;
+            }
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = text;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            try {
+                document.execCommand('copy');
+                showMessage(successMessage, 'bg-green-100 border-green-400 text-green-700');
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                showMessage(errorMessage, 'bg-red-100 border-red-400 text-red-700');
+            } finally {
+                document.body.removeChild(tempTextArea);
+            }
+        }
+
+        // Copy all generated tags to clipboard
+        function copyTagsToClipboard() {
+            const tags = Array.from(generatedTagsDiv.children).map(chip => chip.textContent.trim());
+            const tagsText = tags.join(', ');
+
+            if (!tagsText) {
+                showMessage(translations[currentLanguage].noTagsToCopy, 'bg-yellow-100 border-yellow-400 text-yellow-700');
+                return;
+            }
+            copyTextToClipboard(tagsText, translations[currentLanguage].tagsCopied, translations[currentLanguage].errorCopying);
+        }
+
+        // Export tags to .txt file
+        function exportTagsToTxt() {
+            const tags = Array.from(generatedTagsDiv.children).map(chip => chip.textContent.trim());
+            const tagsText = tags.join(', ');
+
+            if (!tagsText) {
+                showMessage(translations[currentLanguage].noTagsToExport, 'bg-yellow-100 border-yellow-400 text-yellow-700');
+                return;
+            }
+
+            const filename = `social_media_tags_${Date.now()}.txt`;
+            const blob = new Blob([tagsText], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+            showMessage(translations[currentLanguage].tagsExported, 'bg-blue-100 border-blue-400 text-blue-700');
+        }
+
+        // Clear all inputs and results
+        function clearAll() {
+            keywordInput.value = '';
+            instagramKeywordInput.value = '';
+            tiktokKeywordInput.value = '';
+
+            nicheSelect.value = '';
+            videoTypeSelect.value = 'general';
+            toneSelect.value = 'neutral';
+            instagramContentType.value = 'general';
+            tiktokContentType.value = 'general';
+
+            generateHashtagsCheckbox.checked = false;
+            
+            generatedTagsDiv.innerHTML = '';
+            tagsOutputSection.classList.add('hidden');
+
+            loadingIndicator.classList.add('hidden');
+            messageBox.style.display = 'none';
+            updateTagAndCharCount();
+            showMessage(translations[currentLanguage].allFieldsCleared, 'bg-gray-200 border-gray-400 text-gray-700');
+        }
+
+        // FAQ Toggle Functionality
+        function setupFAQToggle() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const questionButton = item.querySelector('.faq-question');
+                const answerDiv = item.querySelector('.faq-answer');
+
+                questionButton.addEventListener('click', () => {
+                    faqItems.forEach(otherItem => {
+                        const otherQuestion = otherItem.querySelector('.faq-question');
+                        const otherAnswer = otherItem.querySelector('.faq-answer');
+                        if (otherQuestion !== questionButton && otherQuestion.classList.contains('active')) {
+                            otherQuestion.classList.remove('active');
+                            otherAnswer.style.display = 'none';
+                        }
+                    });
+
+                    questionButton.classList.toggle('active');
+                    if (answerDiv.style.display === 'block') {
+                        answerDiv.style.display = 'none';
+                    } else {
+                        answerDiv.style.display = 'block';
+                    }
+                });
+            });
+        }
+
+        // Render FAQ based on current language
+        function renderFAQ(lang) {
+            faqContainer.innerHTML = '';
+            const faqData = [
+                { question: lang.faq1Question, answer: lang.faq1Answer },
+                { question: lang.faq2Question, answer: lang.faq2Answer },
+                { question: lang.faq3Question, answer: lang.faq3Answer }
+            ];
+
+            faqData.forEach(item => {
+                const faqItemDiv = document.createElement('div');
+                faqItemDiv.className = 'faq-item';
+                faqItemDiv.innerHTML = `
+                    <button class="faq-question w-full text-left">
+                        ${item.question}
+                        <i class="fas fa-chevron-down icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        ${item.answer}
+                    </div>
+                `;
+                faqContainer.appendChild(faqItemDiv);
+            });
+            setupFAQToggle();
+        }
+
+        // Switch platform tabs
+        function switchPlatform(platform) {
+            currentPlatform = platform;
+            
+            // Update tab styling
+            document.querySelectorAll('.platform-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.platform-tab[data-platform="${platform}"]`).classList.add('active');
+            
+            // Update content visibility
+            document.querySelectorAll('.platform-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${platform}Content`).classList.add('active');
+            
+            // Clear previous results when switching
+            generatedTagsDiv.innerHTML = '';
+            tagsOutputSection.classList.add('hidden');
+        }
+
+        // Event Listeners
+        generateTagsBtn.addEventListener('click', generateYouTubeTags);
+        generateInstagramBtn.addEventListener('click', generateInstagramHashtags);
+        generateTiktokBtn.addEventListener('click', generateTikTokHashtags);
+
+        copyTagsBtn.addEventListener('click', copyTagsToClipboard);
+        exportTagsBtn.addEventListener('click', exportTagsToTxt);
+        clearAllBtn.addEventListener('click', clearAll);
+
+        languageSelect.addEventListener('change', (event) => {
+            currentLanguage = event.target.value;
+            updateUI();
+        });
+
+        tagLanguageSelect.addEventListener('change', (event) => {
+            currentTagLanguage = event.target.value;
+        });
+
+        toggleAdvancedOptionsBtn.addEventListener('click', () => {
+            advancedOptionsPanel.style.display = advancedOptionsPanel.style.display === 'block' ? 'none' : 'block';
+            toggleAdvancedOptionsBtn.querySelector('.icon').classList.toggle('rotate-180');
+        });
+
+        // Platform tab switching
+        youtubeTab.addEventListener('click', () => switchPlatform('youtube'));
+        instagramTab.addEventListener('click', () => switchPlatform('instagram'));
+        tiktokTab.addEventListener('click', () => switchPlatform('tiktok'));
+
+        // Initialize on window load
+        window.onload = function() {
+            initializeFirebaseAndAuth();
+            updateUI();
+            switchPlatform('youtube'); // Start with YouTube selected
+        };
+    </script>
 </body>
 </html>
