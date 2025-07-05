@@ -1,132 +1,194 @@
+import fetch from 'node-fetch';
+import fallbackTags from './fallback-tags.json' assert { type: 'json' };
+
 const WORKING_MODELS = [
-    "google/gemma-3n-4b:free",
-    "openchat/openchat-3.6:free",
-    "mistralai/mistral-small-3.2-24b-instruct:free",
+  "google/gemma-3n-4b:free",
+  "openchat/openchat-3.6:free",
+  "mistralai/mistral-small-3.2-24b-instruct:free"
 ];
 
-const NICHE_PROMPTS = {
-    gaming: "Generate 15-20 specific gaming tags and 15-20 hashtags for",
-    tech: "Generate 15-20 specific tech/electronics tags and 15-20 hashtags for",
-    fitness: "Generate 15-20 specific fitness/workout tags and 15-20 hashtags for",
-    beauty: "Generate 15-20 specific beauty/makeup tags and 15-20 hashtags for",
-    cooking: "Generate 15-20 specific cooking/food tags and 15-20 hashtags for",
-    travel: "Generate 15-20 specific travel/destination tags and 15-20 hashtags for",
-    education: "Generate 15-20 specific education/learning tags and 15-20 hashtags for",
-    vlog: "Generate 15-20 specific vlog/lifestyle tags and 15-20 hashtags for"
-};
-
 export default async (req, res) => {
-    const { title, niche, platform, language = "en" } = req.body;
+  try {
+    const { title, niche, platform = "youtube" } = req.body;
 
-    // 1. Enhanced input validation
-    if (!title || typeof title !== 'string' || title.length > 200) {
-        return res.status(400).json({
-            tags: "video,content,trending",
-            hashtags: "#video #content",
-            error: "Invalid title (1-200 chars required)"
-        });
+    // Validate input
+    if (!title?.trim() || typeof title !== 'string' || title.length > 200) {
+      return sendFallback(res, platform, niche, "Invalid title (1-200 chars required)");
     }
 
-    // 2. Model prioritization
-    let models = [...WORKING_MODELS];
-    if (language !== "en") models.unshift("qwen/qwen1.5-14b:free");
-
-    // 3. Platform-specific generation
-    const isYouTube = platform === 'youtube';
-    const tagCount = isYouTube ? "15-20" : "0";
-    const hashtagCount = "15-20";
-    
-    const nichePrompt = NICHE_PROMPTS[niche] || "Generate 15-20 specific tags and 15-20 hashtags for";
-
-    // 4. Try models sequentially
-    for (const [index, model] of models.entries()) {
-        try {
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 4000);
-            
-            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-                    "HTTP-Referer": "https://turbotags.vercel.app",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    model,
-                    messages: [{
-                        role: "user",
-                        content: `${nichePrompt} "${title}" (platform: ${platform})${language !== "en" ? " in " + language : ""}. ` +
-                                 `Generate ${tagCount} tags and ${hashtagCount} hashtags. ` +
-                                 `Respond STRICTLY with JSON: {"tags":"tag1,tag2,...","hashtags":"#tag1 #tag2"}`
-                    }],
-                    temperature: 0.4,
-                    response_format: { type: "json_object" }
-                }),
-                signal: controller.signal
-            });
-
-            clearTimeout(timeout);
-
-            if (!response.ok) continue;
-            
-            const data = await response.json();
-            const content = data.choices[0]?.message?.content;
-            
-            try {
-                const result = JSON.parse(content);
-                if (result.tags && result.hashtags) {
-                    // Platform-specific formatting
-                    if (!isYouTube) {
-                        result.tags = ""; // Clear tags for non-YouTube platforms
-                    }
-                    return res.status(200).json(result);
-                }
-            } catch (e) {
-                console.error("JSON parse error:", e);
-            }
-        } catch (error) {
-            console.error(`Attempt ${index + 1} failed (${model}):`, error.message);
-            if (index < models.length - 1) await new Promise(r => setTimeout(r, 500 * index));
-        }
+    // Generate based on platform
+    let result;
+    switch (platform) {
+      case "youtube":
+        result = await handleYouTube(title, niche);
+        break;
+      case "instagram":
+        result = await handleInstagram(title, niche);
+        break;
+      case "tiktok":
+        result = await handleTikTok(title, niche);
+        break;
+      default:
+        return sendFallback(res, "youtube", niche, "Invalid platform");
     }
 
-    // 5. Enhanced fallback
-    const fallbackTags = getFallbackTags(title, niche, platform);
-    return res.status(200).json(fallbackTags);
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error("Server error:", error);
+    return sendFallback(res, req.body?.platform || "youtube", req.body?.niche, "System error");
+  }
 };
 
-function getFallbackTags(title, niche, platform) {
-    const words = title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
-    const nicheTags = getNicheTags(niche);
-    const platformTags = getPlatformTags(platform);
-    
-    const allTags = [...new Set([...words, ...nicheTags, ...platformTags])];
-    const hashtags = allTags.map(tag => `#${tag.replace(/\s+/g, '')}`);
+// Platform Handlers
+async function handleYouTube(title, niche) {
+  // Try AI first
+  const aiResult = await tryAIModels(
+    title, 
+    niche, 
+    "youtube", 
+    `Generate 15-20 tags (comma-separated) and 10-15 hashtags (space-separated) for YouTube`
+  );
 
+  if (aiResult.success) {
     return {
-        tags: platform === 'youtube' ? allTags.slice(0, 20).join(', ') : "",
-        hashtags: hashtags.slice(0, 20).join(' ')
+      tags: validateTagCount(aiResult.tags.split(','),
+      hashtags: validateTagCount(aiResult.hashtags.split(' '), 10, 15),
+      model: aiResult.model
     };
+  }
+
+  // Fallback
+  const fallback = fallbackTags.platforms.youtube[niche] || fallbackTags.platforms.youtube.tech;
+  return {
+    tags: selectTags(fallback.tags, 15, 20),
+    hashtags: selectTags(fallback.hashtags, 10, 15),
+    warning: "Used fallback tags"
+  };
 }
 
-function getNicheTags(niche) {
-    const tags = {
-        gaming: ['gaming', 'gameplay', 'walkthrough', 'letsplay', 'pcgaming'],
-        tech: ['technology', 'tech', 'gadget', 'review', 'unboxing'],
-        fitness: ['fitness', 'workout', 'gym', 'exercise', 'training'],
-        beauty: ['beauty', 'makeup', 'skincare', 'cosmetics', 'hairstyle'],
-        cooking: ['cooking', 'food', 'recipe', 'meal', 'chef'],
-        travel: ['travel', 'vacation', 'destination', 'tourism', 'adventure'],
-        education: ['education', 'learn', 'tutorial', 'howto', 'study'],
-        vlog: ['vlog', 'lifestyle', 'dayinlife', 'routine', 'daily']
+async function handleInstagram(title, niche) {
+  // Try AI first
+  const aiResult = await tryAIModels(
+    title,
+    niche,
+    "instagram",
+    `Generate 15-20 Instagram hashtags (space-separated)`
+  );
+
+  if (aiResult.success) {
+    return {
+      tags: "",
+      hashtags: validateTagCount(aiResult.hashtags.split(' ')),
+      model: aiResult.model
     };
-    return niche ? tags[niche] || [] : [];
+  }
+
+  // Fallback
+  const fallback = fallbackTags.platforms.instagram[niche] || fallbackTags.platforms.instagram.tech;
+  return {
+    tags: "",
+    hashtags: selectTags(fallback.hashtags, 15, 20),
+    warning: "Used fallback hashtags"
+  };
 }
 
-function getPlatformTags(platform) {
+async function handleTikTok(title, niche) {
+  // Try AI first
+  const aiResult = await tryAIModels(
+    title,
+    niche,
+    "tiktok",
+    `Generate 15-20 TikTok hashtags (space-separated)`
+  );
+
+  if (aiResult.success) {
     return {
-        youtube: ['youtube', 'video', 'subscribe', 'youtuber', 'content'],
-        instagram: ['instagram', 'insta', 'photo', 'reel', 'story'],
-        tiktok: ['tiktok', 'fyp', 'viral', 'trending', 'foryou']
-    }[platform];
+      tags: "",
+      hashtags: validateTagCount(aiResult.hashtags.split(' ')),
+      model: aiResult.model
+    };
+  }
+
+  // Fallback
+  const fallback = fallbackTags.platforms.tiktok[niche] || fallbackTags.platforms.tiktok.tech;
+  return {
+    tags: "",
+    hashtags: selectTags(fallback.hashtags, 15, 20),
+    warning: "Used fallback hashtags"
+  };
+}
+
+// Helper Functions
+async function tryAIModels(title, niche, platform, promptAddition) {
+  const fullPrompt = `For "${title}" (${niche} content on ${platform}), ${promptAddition}. Respond ONLY with JSON: {"tags":"tag1,tag2,...","hashtags":"#tag1 #tag2"}`;
+
+  for (const [index, model] of WORKING_MODELS.entries()) {
+    try {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "HTTP-Referer": "https://turbotags.vercel.app",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: "user", content: fullPrompt }],
+          temperature: 0.4,
+          response_format: { type: "json_object" }
+        }),
+        signal: controller.signal
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const result = JSON.parse(data.choices[0]?.message?.content || "{}");
+        if (result.tags && result.hashtags) {
+          return { success: true, ...result, model: model.split("/")[1] || model };
+        }
+      }
+    } catch (error) {
+      console.error(`Model ${model} failed:`, error.message);
+      if (index < WORKING_MODELS.length - 1) await new Promise(r => setTimeout(r, 800 * (index + 1)));
+    }
+  }
+  return { success: false };
+}
+
+function selectTags(tags, min, max) {
+  const count = Math.min(tags.length, Math.floor(Math.random() * (max - min + 1)) + min);
+  return [...tags]
+    .sort(() => 0.5 - Math.random())
+    .slice(0, count)
+    .join(tags[0]?.startsWith("#") ? " " : ", ");
+}
+
+function validateTagCount(tags, min = 15, max = 20) {
+  const validTags = tags.filter(t => t.trim());
+  const count = Math.min(validTags.length, Math.floor(Math.random() * (max - min + 1)) + min);
+  return validTags.slice(0, count).join(tags[0]?.startsWith("#") ? " " : ", ");
+}
+
+function sendFallback(res, platform, niche, error) {
+  const response = {
+    error,
+    warning: "Using fallback tags"
+  };
+
+  if (platform === "youtube") {
+    const fallback = fallbackTags.platforms.youtube[niche] || fallbackTags.platforms.youtube.tech;
+    response.tags = selectTags(fallback.tags, 15, 20);
+    response.hashtags = selectTags(fallback.hashtags, 10, 15);
+  } else {
+    const platformKey = platform === "instagram" ? "instagram" : "tiktok";
+    const fallback = fallbackTags.platforms[platformKey][niche] || fallbackTags.platforms[platformKey].tech;
+    response.tags = "";
+    response.hashtags = selectTags(fallback.hashtags, 15, 20);
+  }
+
+  return res.status(400).json(response);
 }
