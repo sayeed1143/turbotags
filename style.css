@@ -19,17 +19,18 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Reverted font to Segoe UI */
 }
 
+html, body { /* Ensure html and body take full height */
+    min-height: 100vh;
+}
+
 body {
     background-color: #f8f9fa; /* Simpler background */
     color: var(--dark-color);
     line-height: 1.6;
-    opacity: 0; /* Initial opacity for fade-in animation */
-    transition: opacity 1s ease-in;
+    /* Removed initial opacity and transition to prevent blank page issue */
 }
 
-body.loaded {
-    opacity: 1; /* Fade in on load */
-}
+/* Removed .body.loaded rule as it's no longer needed */
 
 .container {
     width: 100%;
