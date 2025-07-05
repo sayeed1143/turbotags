@@ -1,0 +1,18 @@
+<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" class="thunder-logo">
+  <circle cx="20" cy="20" r="20" fill="#6C5CE7"/>
+  <path d="M16 10L12 18H18L16 22L24 14H18L22 10H16Z" fill="white"/>
+  <style>
+    .thunder-logo {
+      animation: thunderPulse 1.5s infinite ease-in-out;
+      transition: transform 0.3s ease;
+    }
+    .thunder-logo:hover {
+      animation: thunderPulse 0.5s infinite ease-in-out;
+    }
+    @keyframes thunderPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 0 4px rgba(108, 92, 231, 0.7)); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</svg>
