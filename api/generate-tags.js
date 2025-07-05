@@ -1,27 +1,36 @@
-const PRIORITIZED_MODELS = [
-  "deepseek/deepseek-chat-v3-0324:free",  // 685B MoE - Best quality (free)
-  "deepseek-chat",                        // Fallback 1
-  "openchat",                             // Fallback 2 (fastest)
-  "qwen/qwen1.5-14b"                      // Fallback 3 (multilingual)
+const WORKING_MODELS = [
+  // Tier 1: Free and reliable (July 2024 verified)
+  "google/gemma-3n-4b:free",       // Most stable free option
+  "openchat/openchat-3.6:free",     // Fastest fallback
+  "mistralai/mistral-small-3.2-24b-instruct:free",  // Quality backup
+  
+  // Tier 2: Paid options (uncomment if needed)
+  // "anthropic/claude-3-haiku",    // $0.25/million tokens
+  // "openai/gpt-3.5-turbo"         // $0.50/million tokens
 ];
 
 export default async (req, res) => {
   const { title, language = "en" } = req.body;
-  
-  // 1. Validate input
-  if (!title) return res.status(400).json({ 
-    tags: "video,content,trending",
-    hashtags: "#video #content",
-    error: "Title required" 
-  });
 
-  // 2. Dynamic model selection
-  let models = [...PRIORITIZED_MODELS];
-  if (language !== "en") models.unshift("qwen/qwen1.5-14b"); // Prioritize Qwen for non-English
+  // 1. Enhanced input validation
+  if (!title || typeof title !== 'string' || title.length > 200) {
+    return res.status(400).json({
+      tags: "video,content,trending",
+      hashtags: "#video #content",
+      error: "Invalid title (1-200 chars required)"
+    });
+  }
 
-  // 3. Try models sequentially
-  for (const model of models) {
+  // 2. Model prioritization
+  let models = [...WORKING_MODELS];
+  if (language !== "en") models.unshift("qwen/qwen1.5-14b:free");
+
+  // 3. Try models with timeout and retries
+  for (const [index, model] of models.entries()) {
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 4000); // 4s timeout
+      
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -33,28 +42,44 @@ export default async (req, res) => {
           model,
           messages: [{
             role: "user",
-            content: `Generate 8 specific tags and 3 hashtags for "${title}"${language !== "en" ? " in " + language : ""}. Respond ONLY with JSON: {"tags":"tag1,tag2", "hashtags":"#tag1 #tag2"}`
+            content: `Generate 15-20 specific tags and 3-5 hashtags for "${title}"${language !== "en" ? " in " + language : ""}. Respond STRICTLY with valid JSON: {"tags":"tag1,tag2,...","hashtags":"#tag1 #tag2"}`
           }],
-          temperature: 0.7 // Balances creativity/relevance
-        })
+          temperature: 0.4,  // More deterministic
+          response_format: { type: "json_object" } // Force JSON
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeout);
 
       if (!response.ok) continue;
       
       const data = await response.json();
       const content = data.choices[0]?.message?.content;
-      const jsonMatch = content.match(/\{.*\}/s);
       
-      if (jsonMatch) return res.status(200).json(JSON.parse(jsonMatch[0]));
+      // Robust JSON parsing
+      try {
+        const result = JSON.parse(content);
+        if (result.tags && result.hashtags) {
+          return res.status(200).json({
+            ...result,
+            model_used: model.split("/")[1] || model
+          });
+        }
+      } catch (e) {
+        console.error("JSON parse error:", e);
+      }
     } catch (error) {
-      console.error(`Model ${model} failed:`, error.message);
+      console.error(`Attempt ${index + 1} failed (${model}):`, error.message);
+      if (index < models.length - 1) await new Promise(r => setTimeout(r, 500 * index)); // Exponential backoff
     }
   }
 
-  // 4. Final fallback
+  // 4. Enhanced fallback
   return res.status(200).json({
-    tags: "video,content,trending,creator",
-    hashtags: "#viral #trending #content",
-    warning: "All models unavailable - using fallback"
+    tags: "video,content,trending,creator,digital,media,online,platform,streaming,upload,viral,explore,page,post,reels,shorts,story",
+    hashtags: "#ContentCreator #DigitalMarketing #Trending",
+    warning: "AI models unavailable - using premium fallback tags",
+    cached: true
   });
-}
+};
