@@ -1,63 +1,30 @@
 {
-  "fallbackTags": {
-    "categories": {
+  "platforms": {
+    "youtube": {
       "gaming": {
-        "keywords": ["game", "play", "stream", "twitch", "esports"],
-        "platforms": {
-          "youtube": {
-            "tags": "gaming,gameplay,walkthrough,letsplay,pcgaming,console,twitch,streamer,esports,videogames,progamer,indiegames,review,guide,tips,fps,rpg,multiplayer,soloq,speedrun",
-            "hashtags": "#Gaming #Twitch #Esports #Gameplay #LetsPlay"
-          },
-          "instagram": {
-            "tags": "gaming,game,gamer,gamergirl,gamerguy,videogames,twitch,streamer,esports,gaminglife,setup,keyboard,mouse,headset",
-            "hashtags": "#GamingSetup #GamerGirl #PCBuild #ConsoleGaming"
-          },
-          "tiktok": {
-            "tags": "gaming,game,gamer,twitch,streamer,clips,montage,fails,win,funny,trending,viral,challenge,duet",
-            "hashtags": "#GamingClips #GamingMontage #FYP #Viral"
-          }
-        }
+        "tags": ["gaming", "gameplay", "walkthrough", "letsplay", "pcgaming", "console", "twitch", "streamer", "esports", "videogames", "progamer", "indiegames", "review", "guide", "tips", "fps", "rpg", "multiplayer", "soloq", "speedrun"],
+        "hashtags": ["#Gaming", "#Twitch", "#Esports", "#Gameplay", "#LetsPlay", "#PCGaming", "#ConsoleGaming", "#GameReview", "#GamingCommunity", "#GamingSetup", "#GamingLife", "#StreamerLife", "#IndieGames", "#GamingTips", "#GamingFun"]
       },
       "tech": {
-        "keywords": ["tech", "gadget", "review", "unboxing", "tutorial"],
-        "platforms": {
-          "youtube": {
-            "tags": "technology,tech,gadget,review,unboxing,tutorial,howto,electronics,smartphone,laptop,pcbuild,setup,techtips,ai",
-            "hashtags": "#TechReview #Unboxing #HowTo #TechTips"
-          },
-          "instagram": {
-            "tags": "technology,tech,gadget,review,unboxing,tutorial,howto,electronics,smartphone,laptop,photography,camera,drone",
-            "hashtags": "#TechLover #GadgetFreak #Photography"
-          },
-          "tiktok": {
-            "tags": "tech,technology,gadget,review,hack,tips,tricks,smartphone,laptop,future,lifehack,useful,amazing",
-            "hashtags": "#TechHack #LifeHack #FutureTech #Amazing"
-          }
-        }
-      },
-      "cooking": {
-        "keywords": ["cook", "food", "recipe", "meal", "chef"],
-        "platforms": {
-          "youtube": {
-            "tags": "cooking,food,recipe,meal,chef,kitchen,tutorial,howto,baking,healthy,easyrecipe,quickmeal,beginner",
-            "hashtags": "#Cooking #Recipe #Foodie #HomeChef"
-          },
-          "instagram": {
-            "tags": "food,foodie,foodphotography,foodstagram,instafood,delicious,yummy,tasty,homemade,cookingathome",
-            "hashtags": "#FoodPorn #InstaFood #HomeCooking"
-          },
-          "tiktok": {
-            "tags": "food,recipe,cooking,easyrecipe,quickmeal,beginner,5minutemeal,lifehack,kitchenhacks,viralrecipe",
-            "hashtags": "#EasyRecipe #FoodTok #ViralRecipe"
-          }
-        }
+        "tags": ["technology", "tech", "gadget", "review", "unboxing", "tutorial", "howto", "electronics", "smartphone", "laptop", "pcbuild", "setup", "techtips", "ai", "innovation", "futuretech", "diytech", "coding", "programming", "techtricks"],
+        "hashtags": ["#TechReview", "#Unboxing", "#HowTo", "#TechTips", "#Gadget", "#Smartphone", "#Laptop", "#PCBuild", "#TechSetup", "#ArtificialIntelligence", "#Coding", "#Programming", "#TechInnovation", "#DIYTech", "#TechTricks"]
       }
     },
-    "generic": {
-      "tags": "viral,trending,explore,content,digital,creator,media,online,platform,streaming,upload,new,popular,latest,fyp",
-      "hashtags": "#Trending #Viral #ExplorePage #FYP"
+    "instagram": {
+      "gaming": {
+        "hashtags": ["#GamingSetup", "#GamerGirl", "#PCBuild", "#ConsoleGaming", "#Esports", "#GamingCommunity", "#GamingLife", "#GamingRig", "#GamingRoom", "#GamingPC", "#GamingChair", "#GamingKeyboard", "#GamingMouse", "#GamingHeadset", "#GamingMonitor", "#GamingSetupGoals", "#GamingIsLife", "#GamingMemes", "#GamingPhotography", "#GamingWorld"]
+      },
+      "tech": {
+        "hashtags": ["#TechLover", "#GadgetFreak", "#Photography", "#TechGeek", "#Unboxing", "#TechSetup", "#WorkFromHomeSetup", "#PCSetup", "#TechInspiration", "#TechOfInstagram", "#FutureTech", "#TechInnovation", "#SmartHome", "#TechAddict", "#TechLife", "#TechDaily", "#TechPost", "#TechGram", "#TechNerd", "#TechObsessed"]
+      }
+    },
+    "tiktok": {
+      "gaming": {
+        "hashtags": ["#GamingClips", "#GamingMontage", "#FYP", "#Viral", "#GamingMoments", "#GamingFails", "#GamingWin", "#GamingHighlights", "#GamingCompilation", "#GamingSkills", "#GamingTricks", "#GamingGlitches", "#GamingFunny", "#GamingMemes", "#GamingReacts", "#GamingChallenge", "#GamingDuet", "#GamingStitch", "#GamingTrend", "#GamingContent"]
+      },
+      "tech": {
+        "hashtags": ["#TechHack", "#LifeHack", "#FutureTech", "#Amazing", "#TechTricks", "#TechTips", "#TechLifeHacks", "#TechReview", "#TechSetup", "#TechMakeover", "#TechTransformation", "#TechBeforeAfter", "#TechDIY", "#TechTutorial", "#TechHowTo", "#TechExplained", "#TechViral", "#TechTrend", "#TechDuet", "#TechStitch"]
+      }
     }
-  },
-  "version": "2.1",
-  "lastUpdated": "2024-07-15"
+  }
 }
