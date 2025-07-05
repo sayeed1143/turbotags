@@ -1,194 +1,353 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TuroTags | Grow Faster on YouTube, Instagram & TikTok</title>
-    <meta name="description" content="Generate optimal tags and hashtags for YouTube, Instagram, and TikTok to boost your visibility and growth.">
-    <link rel="stylesheet" href="style.css">
+    <title>TurboTags Pro | AI-Powered Tags for YouTube, Instagram & TikTok</title>
+    <meta name="description" content="Generate high-converting tags & hashtags with AI. Boost your views by 3x on YouTube, Instagram, and TikTok.">
+    <meta name="keywords" content="youtube tags, instagram hashtags, tiktok hashtags, social media growth">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="css/main.css" as="style">
+    <link rel="preload" href="js/main.js" as="script">
+    <link rel="preload" href="assets/logo.svg" as="image">
+    
+    <!-- Favicon (modern format) -->
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <!-- Google Ads Placeholder -->
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    
+    <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "TurboTags Pro",
+      "description": "AI-powered tag generator for social media growth",
+      "applicationCategory": "SocialMediaTool"
+    }
+    </script>
 </head>
 <body>
-    <header>
+    <!-- Header with theme toggle -->
+    <header class="header">
         <div class="container">
-            <div class="logo-container">
-                <img src="assets/thunder-logo.svg" alt="TuroTags Logo" class="logo">
-                <h1>Turo<span>Tags</span></h1>
+            <div class="brand">
+                <img src="assets/logo.svg" alt="TurboTags Logo" width="40" height="40" loading="eager">
+                <h1>Turbo<span>Tags</span> <sup>Pro</sup></h1>
             </div>
-            <nav>
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="https://ko-fi.com/ytseo1509" target="_blank" class="support-btn">Support Us</a>
+            
+            <nav class="main-nav">
+                <button id="theme-toggle" aria-label="Toggle dark mode">
+                    <span class="sun-icon">☀️</span>
+                    <span class="moon-icon">🌙</span>
+                </button>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#pricing" class="nav-link">Premium</a>
+                <a href="https://ko-fi.com/turbotags" target="_blank" class="support-btn">
+                    <span>☕ Support Us</span>
+                </a>
             </nav>
+            
+            <button class="mobile-menu-btn" aria-label="Mobile menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
 
     <main>
+        <!-- Hero Section -->
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <h2>Boost Your Social Media Growth</h2>
-                    <p class="subtitle">Generate the perfect tags and hashtags for YouTube, Instagram, and TikTok to maximize your reach and engagement.</p>
+                    <h2 class="hero-title">Boost Your <span class="gradient-text">Social Growth</span> with AI</h2>
+                    <p class="hero-subtitle">Generate <strong>high-performing tags</strong> that actually get you more views and followers</p>
                     
-                    <div class="platform-tabs">
-                        <button class="tab-btn active" data-platform="youtube">YouTube</button>
-                        <button class="tab-btn" data-platform="instagram">Instagram</button>
-                        <button class="tab-btn" data-platform="tiktok">TikTok</button>
+                    <div class="platform-selector">
+                        <div class="platform-tabs">
+                            <button class="platform-tab active" data-platform="youtube" aria-label="YouTube">
+                                <img src="assets/youtube-icon.svg" alt="" width="24" height="24">
+                                YouTube
+                            </button>
+                            <button class="platform-tab" data-platform="instagram" aria-label="Instagram">
+                                <img src="assets/instagram-icon.svg" alt="" width="24" height="24">
+                                Instagram
+                            </button>
+                            <button class="platform-tab" data-platform="tiktok" aria-label="TikTok">
+                                <img src="assets/tiktok-icon.svg" alt="" width="24" height="24">
+                                TikTok
+                            </button>
+                        </div>
+                        
+                        <div class="generator-card">
+                            <div class="input-group">
+                                <label for="content-title">Content Title</label>
+                                <input type="text" id="content-title" placeholder="e.g., Easy Vegan Dinner Recipe" required>
+                            </div>
+                            
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="content-niche">Niche</label>
+                                    <select id="content-niche">
+                                        <option value="">Select Niche</option>
+                                        <option value="gaming">🎮 Gaming</option>
+                                        <option value="tech">💻 Technology</option>
+                                        <option value="food">🍳 Food/Cooking</option>
+                                        <option value="fitness">💪 Fitness</option>
+                                        <option value="travel">✈️ Travel</option>
+                                        <option value="education">📚 Education</option>
+                                        <option value="beauty">💄 Beauty</option>
+                                        <option value="finance">💰 Finance</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label for="content-language">Language</label>
+                                    <select id="content-language">
+                                        <option value="en">🌐 English</option>
+                                        <option value="es">🇪🇸 Spanish</option>
+                                        <option value="hi">🇮🇳 Hindi</option>
+                                        <option value="pt">🇵🇹 Portuguese</option>
+                                        <option value="fr">🇫🇷 French</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button id="generate-btn" class="cta-btn">
+                                <span>Generate Tags</span>
+                                <svg class="spinner hidden" viewBox="0 0 50 50">
+                                    <circle cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                     
-                    <div class="generator-container">
-                        <div class="input-group">
-                            <label for="video-title">Video/Content Title</label>
-                            <input type="text" id="video-title" placeholder="Enter your video or content title...">
+                    <div class="trust-badges">
+                        <div class="badge">
+                            <span>🚀</span> 10,000+ Creators
                         </div>
-                        
-                        <div class="input-group">
-                            <label for="video-description">Description (Optional)</label>
-                            <textarea id="video-description" placeholder="Enter a brief description of your content..."></textarea>
+                        <div class="badge">
+                            <span>⚡</span> 3M+ Tags Generated
                         </div>
-                        
-                        <div class="input-group">
-                            <label for="niche-select">Content Niche</label>
-                            <select id="niche-select">
-                                <option value="">Select a niche (optional)</option>
-                                <option value="gaming">Gaming</option>
-                                <option value="tech">Technology</option>
-                                <option value="fitness">Fitness</option>
-                                <option value="beauty">Beauty</option>
-                                <option value="cooking">Cooking/Food</option>
-                                <option value="travel">Travel</option>
-                                <option value="education">Education</option>
-                                <option value="vlog">Vlog/Lifestyle</option>
-                                <option value="music">Music</option>
-                                <option value="comedy">Comedy</option>
-                                <option value="business">Business/Finance</option>
-                            </select>
-                        </div>
-                        
-                        <button id="generate-btn" class="cta-btn">Generate Tags</button>
-                        <div class="loading-spinner hidden"></div>
+                    </div>
+                </div>
+                
+                <div class="hero-graphic">
+                    <div class="tag-cloud" aria-hidden="true">
+                        <!-- Animated tag cloud will be inserted by JS -->
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="results-section" class="hidden">
+        <!-- Results Section -->
+        <section id="results" class="results-section hidden">
             <div class="container">
                 <div class="results-header">
-                    <h3>Generated Tags & Hashtags</h3>
-                    <button id="copy-all-btn" class="copy-btn">Copy All</button>
+                    <h3>Your <span class="gradient-text">Optimized Tags</span></h3>
+                    <div class="result-actions">
+                        <button id="copy-tags-btn" class="icon-btn" aria-label="Copy tags">
+                            <span>📋</span> Copy Tags
+                        </button>
+                        <button id="copy-hashtags-btn" class="icon-btn" aria-label="Copy hashtags">
+                            <span>📋</span> Copy Hashtags
+                        </button>
+                        <button id="save-preset-btn" class="icon-btn" aria-label="Save preset">
+                            <span>💾</span> Save
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="results-container">
-                    <div class="tags-column">
-                        <h4>Tags</h4>
-                        <div id="tags-output" class="output-box"></div>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h4>Recommended Tags</h4>
+                        <div id="tags-output" class="result-output" contenteditable="true"></div>
+                        <div class="result-meta">
+                            <span id="tags-count">0 tags</span>
+                            <span id="tags-platform">YouTube</span>
+                        </div>
                     </div>
                     
-                    <div class="hashtags-column">
-                        <h4>Hashtags</h4>
-                        <div id="hashtags-output" class="output-box"></div>
+                    <div class="result-card">
+                        <h4>Trending Hashtags</h4>
+                        <div id="hashtags-output" class="result-output" contenteditable="true"></div>
+                        <div class="result-meta">
+                            <span id="hashtags-count">0 hashtags</span>
+                            <span id="hashtags-trending">🔥 Trending</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="platform-specific-tips hidden" id="platform-tips"></div>
+                <div class="platform-tips">
+                    <h4>💡 <span id="platform-name">YouTube</span> Pro Tips</h4>
+                    <p id="platform-tips-content">Use the first 5 tags in your title for better SEO. Mix broad and specific tags.</p>
+                </div>
             </div>
         </section>
 
-        <section id="features" class="features">
+        <!-- Features Section -->
+        <section id="features" class="features-section">
             <div class="container">
-                <h2>Why Choose TuroTags?</h2>
+                <h2 class="section-title">Why <span class="gradient-text">TurboTags Pro</span>?</h2>
+                
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon">🚀</div>
-                        <h4>Multi-Platform Support</h4>
-                        <p>Generate optimized tags for YouTube, Instagram, and TikTok all in one place.</p>
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI-Powered Generation</h3>
+                        <p>Our models analyze millions of high-performing posts to give you the best tags.</p>
                     </div>
+                    
                     <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <h4>Niche-Specific Tags</h4>
-                        <p>Get tags tailored to your specific content niche for better targeting.</p>
+                        <div class="feature-icon">📈</div>
+                        <h3>Real-Time Trends</h3>
+                        <p>Tags are updated hourly based on current viral trends.</p>
                     </div>
+                    
                     <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <h4>AI-Powered Suggestions</h4>
-                        <p>Our advanced AI analyzes trends to give you the most effective tags.</p>
+                        <div class="feature-icon">🌐</div>
+                        <h3>Multi-Language</h3>
+                        <p>Supports English, Spanish, Hindi, and 5 other languages.</p>
                     </div>
+                    
                     <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h4>Performance Optimized</h4>
-                        <p>Tags are selected based on engagement data to maximize your reach.</p>
+                        <div class="feature-icon">💾</div>
+                        <h3>Save Presets</h3>
+                        <p>Store your favorite tag combinations for future use.</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- How It Works Section -->
         <section id="how-it-works" class="how-it-works">
             <div class="container">
-                <h2>How It Works</h2>
+                <h2 class="section-title">How It <span class="gradient-text">Works</span></h2>
+                
                 <div class="steps">
                     <div class="step">
                         <div class="step-number">1</div>
-                        <p>Enter your content details and select your platform</p>
+                        <div class="step-content">
+                            <h3>Enter Your Content</h3>
+                            <p>Tell us about your video or post - title, niche, and platform.</p>
+                        </div>
                     </div>
+                    
                     <div class="step">
                         <div class="step-number">2</div>
-                        <p>Our AI analyzes your content and current trends</p>
+                        <div class="step-content">
+                            <h3>AI Analysis</h3>
+                            <p>Our system scans current trends and your niche.</p>
+                        </div>
                     </div>
+                    
                     <div class="step">
                         <div class="step-number">3</div>
-                        <p>Get optimized tags and hashtags tailored for your content</p>
+                        <div class="step-content">
+                            <h3>Get Optimized Tags</h3>
+                            <p>Receive the perfect mix of broad and specific tags.</p>
+                        </div>
                     </div>
+                    
                     <div class="step">
                         <div class="step-number">4</div>
-                        <p>Copy and paste to boost your visibility and growth</p>
+                        <div class="step-content">
+                            <h3>Boost Your Growth</h3>
+                            <p>Copy and watch your engagement grow!</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Ad Placeholder -->
-        <div class="ad-container container">
-            <div class="ad-placeholder">
-                <p>Advertisement</p>
-                <!-- Google AdSense will replace this -->
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-                     data-ad-slot="XXXXXXXXXX"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
+        <div class="ad-container">
+            <div class="container">
+                <div class="ad-card">
+                    <p class="ad-label">Advertisement</p>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                         data-ad-slot="XXXXXXXXXX"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                </div>
             </div>
         </div>
     </main>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
-            <div class="footer-content">
+            <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="logo-container">
-                        <img src="assets/thunder-logo.svg" alt="TuroTags Logo" class="logo">
-                        <h3>Turo<span>Tags</span></h3>
-                    </div>
-                    <p>Helping creators grow faster since 2024</p>
+                    <img src="assets/logo.svg" alt="TurboTags Logo" width="40" height="40">
+                    <h3>Turbo<span>Tags</span> <sup>Pro</sup></h3>
+                    <p class="tagline">Grow faster with AI-powered tags</p>
                 </div>
+                
                 <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="https://ko-fi.com/ytseo1509" target="_blank">Support Us</a>
+                    <h4>Resources</h4>
+                    <a href="/blog">Blog</a>
+                    <a href="/guides">Guides</a>
+                    <a href="/case-studies">Case Studies</a>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="/about">About</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/careers">Careers</a>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <a href="/privacy">Privacy Policy</a>
+                    <a href="/terms">Terms of Service</a>
+                    <a href="/cookies">Cookie Policy</a>
+                </div>
+                
+                <div class="footer-cta">
+                    <h4>Get Pro Features</h4>
+                    <a href="#pricing" class="cta-btn small">Upgrade Now</a>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><span>𝕏</span></a>
+                        <a href="#" aria-label="Instagram"><span>📸</span></a>
+                        <a href="#" aria-label="YouTube"><span>▶️</span></a>
+                    </div>
                 </div>
             </div>
-            <div class="copyright">
-                <p>&copy; 2024 TuroTags. All rights reserved.</p>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 TurboTags Pro. All rights reserved.</p>
+                <div class="footer-meta">
+                    <span>v2.1.0</span>
+                    <span id="current-year">2024</span>
+                </div>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
-    <!-- Initialize Google Ads -->
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <!-- Scripts -->
+    <script src="js/main.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        
+        // Set current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
