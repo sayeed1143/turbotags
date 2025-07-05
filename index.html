@@ -3,270 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Metrics Pro | Analytics Dashboard</title>
+    <title>Social Analytics Pro</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
-    <div class="dashboard-container">
+    <div class="analytics-dashboard">
+        <!-- Header -->
         <header class="dashboard-header">
-            <div class="header-content">
-                <h1 class="logo">SocialMetrics<span>Pro</span></h1>
-                <div class="user-controls">
-                    <button class="notification-btn">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </button>
-                    <div class="user-profile">
-                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User profile">
-                    </div>
-                </div>
+            <h1>Social Analytics</h1>
+            <div class="time-filter">
+                <select>
+                    <option>Last 7 days</option>
+                    <option selected>Last 30 days</option>
+                    <option>Last 90 days</option>
+                </select>
             </div>
         </header>
 
-        <main class="dashboard-main">
-            <section class="platform-selector-section">
-                <div class="section-header">
-                    <h2>Platform Analytics</h2>
-                    <p class="section-subtitle">Select a platform to view detailed metrics</p>
-                </div>
-                
-                <div class="platform-tabs">
-                    <button class="tab-btn active" data-platform="youtube">
-                        <div class="platform-icon youtube">
-                            <i class="fab fa-youtube"></i>
-                        </div>
-                        <span>YouTube</span>
-                    </button>
-                    
-                    <button class="tab-btn" data-platform="instagram">
-                        <div class="platform-icon instagram">
-                            <i class="fab fa-instagram"></i>
-                        </div>
-                        <span>Instagram</span>
-                    </button>
-                    
-                    <button class="tab-btn" data-platform="tiktok">
-                        <div class="platform-icon tiktok">
-                            <i class="fab fa-tiktok"></i>
-                        </div>
-                        <span>TikTok</span>
-                    </button>
-                    
-                    <button class="tab-btn" data-platform="twitter">
-                        <div class="platform-icon twitter">
-                            <i class="fab fa-twitter"></i>
-                        </div>
-                        <span>Twitter</span>
-                    </button>
-                </div>
-            </section>
+        <!-- Platform Selector -->
+        <div class="platform-selector">
+            <button class="platform-tab active" data-platform="youtube">
+                <i class="fab fa-youtube"></i> YouTube
+            </button>
+            <button class="platform-tab" data-platform="instagram">
+                <i class="fab fa-instagram"></i> Instagram
+            </button>
+            <button class="platform-tab" data-platform="tiktok">
+                <i class="fab fa-tiktok"></i> TikTok
+            </button>
+        </div>
 
-            <section class="analytics-section">
-                <div class="metrics-grid">
-                    <!-- YouTube Metrics Card -->
-                    <div class="metric-card youtube animate__animated animate__fadeIn">
-                        <div class="metric-header">
-                            <div class="metric-icon">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                            <h3>Views</h3>
-                        </div>
-                        <div class="metric-value">245.8K</div>
-                        <div class="metric-change positive">
-                            <i class="fas fa-arrow-up"></i> 12.4%
-                        </div>
-                        <div class="metric-graph">
-                            <canvas id="viewsChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <!-- Instagram Metrics Card -->
-                    <div class="metric-card instagram animate__animated animate__fadeIn">
-                        <div class="metric-header">
-                            <div class="metric-icon">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                            <h3>Engagement</h3>
-                        </div>
-                        <div class="metric-value">78.3%</div>
-                        <div class="metric-change positive">
-                            <i class="fas fa-arrow-up"></i> 5.2%
-                        </div>
-                        <div class="metric-graph">
-                            <canvas id="engagementChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <!-- TikTok Metrics Card -->
-                    <div class="metric-card tiktok animate__animated animate__fadeIn">
-                        <div class="metric-header">
-                            <div class="metric-icon">
-                                <i class="fas fa-share-alt"></i>
-                            </div>
-                            <h3>Shares</h3>
-                        </div>
-                        <div class="metric-value">12.4K</div>
-                        <div class="metric-change negative">
-                            <i class="fas fa-arrow-down"></i> 3.1%
-                        </div>
-                        <div class="metric-graph">
-                            <canvas id="sharesChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <!-- Twitter Metrics Card -->
-                    <div class="metric-card twitter animate__animated animate__fadeIn">
-                        <div class="metric-header">
-                            <div class="metric-icon">
-                                <i class="fas fa-retweet"></i>
-                            </div>
-                            <h3>Retweets</h3>
-                        </div>
-                        <div class="metric-value">8.7K</div>
-                        <div class="metric-change positive">
-                            <i class="fas fa-arrow-up"></i> 7.8%
-                        </div>
-                        <div class="metric-graph">
-                            <canvas id="retweetsChart"></canvas>
-                        </div>
-                    </div>
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span>Total Views</span>
+                    <i class="fas fa-eye"></i>
                 </div>
-            </section>
-
-            <section class="content-performance">
-                <div class="performance-header">
-                    <h2>Top Performing Content</h2>
-                    <div class="time-filter">
-                        <select id="timeRange">
-                            <option value="7">Last 7 Days</option>
-                            <option value="30" selected>Last 30 Days</option>
-                            <option value="90">Last 90 Days</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="content-grid">
-                    <!-- Content Card 1 -->
-                    <div class="content-card">
-                        <div class="content-thumbnail youtube">
-                            <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Video thumbnail">
-                            <div class="platform-badge">
-                                <i class="fab fa-youtube"></i>
-                            </div>
-                        </div>
-                        <div class="content-details">
-                            <h3 class="content-title">How to Grow Your Channel in 2023</h3>
-                            <div class="content-metrics">
-                                <span class="metric"><i class="fas fa-eye"></i> 124K</span>
-                                <span class="metric"><i class="fas fa-thumbs-up"></i> 8.2K</span>
-                                <span class="metric"><i class="fas fa-comment"></i> 1.4K</span>
-                            </div>
-                            <div class="content-cta">
-                                <button class="view-btn">View Analytics</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Content Card 2 -->
-                    <div class="content-card">
-                        <div class="content-thumbnail instagram">
-                            <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868" alt="Instagram post">
-                            <div class="platform-badge">
-                                <i class="fab fa-instagram"></i>
-                            </div>
-                        </div>
-                        <div class="content-details">
-                            <h3 class="content-title">Behind the Scenes: Product Shoot</h3>
-                            <div class="content-metrics">
-                                <span class="metric"><i class="fas fa-heart"></i> 24.7K</span>
-                                <span class="metric"><i class="fas fa-comment"></i> 892</span>
-                                <span class="metric"><i class="fas fa-share"></i> 1.2K</span>
-                            </div>
-                            <div class="content-cta">
-                                <button class="view-btn">View Analytics</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Content Card 3 -->
-                    <div class="content-card">
-                        <div class="content-thumbnail tiktok">
-                            <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0" alt="TikTok video">
-                            <div class="platform-badge">
-                                <i class="fab fa-tiktok"></i>
-                            </div>
-                        </div>
-                        <div class="content-details">
-                            <h3 class="content-title">Day in the Life Challenge</h3>
-                            <div class="content-metrics">
-                                <span class="metric"><i class="fas fa-play"></i> 2.1M</span>
-                                <span class="metric"><i class="fas fa-heart"></i> 347K</span>
-                                <span class="metric"><i class="fas fa-comment"></i> 8.4K</span>
-                            </div>
-                            <div class="content-cta">
-                                <button class="view-btn">View Analytics</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <aside class="dashboard-sidebar">
-            <nav class="sidebar-nav">
-                <ul>
-                    <li class="active">
-                        <a href="#">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-video"></i>
-                            <span>Content</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-users"></i>
-                            <span>Audience</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-bell"></i>
-                            <span>Alerts</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-cog"></i>
-                            <span>Settings</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="upgrade-card">
-                    <h3>Pro Analytics</h3>
-                    <p>Unlock advanced metrics and insights</p>
-                    <button class="upgrade-btn">Upgrade Now</button>
+                <div class="metric-value">1.24M</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i> 12.4% vs last period
                 </div>
             </div>
-        </aside>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span>Engagement Rate</span>
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="metric-value">7.8%</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i> 2.1% vs last period
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span>New Followers</span>
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div class="metric-value">8,742</div>
+                <div class="metric-change negative">
+                    <i class="fas fa-arrow-down"></i> 1.3% vs last period
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Visualization -->
+        <div class="data-visualization">
+            <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="data-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Content</th>
+                        <th>Views</th>
+                        <th>Engagement</th>
+                        <th>CTR</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Product Launch Video</td>
+                        <td>324K</td>
+                        <td>8.2%</td>
+                        <td>4.7%</td>
+                        <td>Jun 15</td>
+                    </tr>
+                    <tr>
+                        <td>How-To Tutorial</td>
+                        <td>287K</td>
+                        <td>7.1%</td>
+                        <td>3.9%</td>
+                        <td>Jun 8</td>
+                    </tr>
+                    <tr>
+                        <td>Behind the Scenes</td>
+                        <td>198K</td>
+                        <td>6.5%</td>
+                        <td>3.2%</td>
+                        <td>Jun 1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
