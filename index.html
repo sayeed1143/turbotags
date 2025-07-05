@@ -3,164 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TuroTags | Grow Faster on YouTube, Instagram & TikTok</title>
-    <meta name="description" content="Generate optimal tags and hashtags for YouTube, Instagram, and TikTok to boost your visibility and growth.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <title>Social Metrics Pro | Analytics Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo-container">
-                <img src="assets/thunder-logo.svg" alt="TuroTags Logo" class="logo">
-                <h1>Turo<span>Tags</span></h1>
-            </div>
-            <nav>
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="https://ko-fi.com/ytseo1509" target="_blank" class="support-btn">Support Us</a>
-            </nav>
-        </div>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h2>Boost Your Social Media Growth</h2>
-                    <p class="subtitle">Generate the perfect tags and hashtags for YouTube, Instagram, and TikTok to maximize your reach and engagement.</p>
-                    
-                    <div class="platform-tabs">
-                        <button class="tab-btn active" data-platform="youtube">YouTube</button>
-                        <button class="tab-btn" data-platform="instagram">Instagram</button>
-                        <button class="tab-btn" data-platform="tiktok">TikTok</button>
-                    </div>
-                    
-                    <div class="generator-container">
-                        <div class="input-group">
-                            <label for="video-title">Video/Content Title</label>
-                            <input type="text" id="video-title" placeholder="Enter your video or content title...">
-                        </div>
-                        
-                        <div class="input-group">
-                            <label for="niche-select">Content Niche</label>
-                            <select id="niche-select">
-                                <option value="">Auto-detect niche</option>
-                                <option value="gaming">Gaming</option>
-                                <option value="tech">Technology</option>
-                                <option value="fitness">Fitness</option>
-                                <option value="beauty">Beauty</option>
-                                <option value="cooking">Cooking/Food</option>
-                                <option value="travel">Travel</option>
-                                <option value="education">Education</option>
-                                <option value="vlog">Vlog/Lifestyle</option>
-                            </select>
-                        </div>
-                        
-                        <button id="generate-btn" class="cta-btn">Generate Tags</button>
-                        <div class="loading-spinner hidden"></div>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1 class="logo">SocialMetrics<span>Pro</span></h1>
+                <div class="user-controls">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="user-profile">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User profile">
                     </div>
                 </div>
             </div>
-        </section>
+        </header>
 
-        <section id="results-section" class="hidden">
-            <div class="container">
-                <div class="results-header">
-                    <h3>Generated Tags & Hashtags</h3>
-                    <button id="copy-all-btn" class="copy-btn">Copy All</button>
+        <main class="dashboard-main">
+            <section class="platform-selector-section">
+                <div class="section-header">
+                    <h2>Platform Analytics</h2>
+                    <p class="section-subtitle">Select a platform to view detailed metrics</p>
                 </div>
                 
-                <div class="results-container">
-                    <div class="tags-column">
-                        <h4>Tags</h4>
-                        <div id="tags-output" class="output-box"></div>
+                <div class="platform-tabs">
+                    <button class="tab-btn active" data-platform="youtube">
+                        <div class="platform-icon youtube">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <span>YouTube</span>
+                    </button>
+                    
+                    <button class="tab-btn" data-platform="instagram">
+                        <div class="platform-icon instagram">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <span>Instagram</span>
+                    </button>
+                    
+                    <button class="tab-btn" data-platform="tiktok">
+                        <div class="platform-icon tiktok">
+                            <i class="fab fa-tiktok"></i>
+                        </div>
+                        <span>TikTok</span>
+                    </button>
+                    
+                    <button class="tab-btn" data-platform="twitter">
+                        <div class="platform-icon twitter">
+                            <i class="fab fa-twitter"></i>
+                        </div>
+                        <span>Twitter</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="analytics-section">
+                <div class="metrics-grid">
+                    <!-- YouTube Metrics Card -->
+                    <div class="metric-card youtube animate__animated animate__fadeIn">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <h3>Views</h3>
+                        </div>
+                        <div class="metric-value">245.8K</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> 12.4%
+                        </div>
+                        <div class="metric-graph">
+                            <canvas id="viewsChart"></canvas>
+                        </div>
                     </div>
                     
-                    <div class="hashtags-column">
-                        <h4>Hashtags</h4>
-                        <div id="hashtags-output" class="output-box"></div>
+                    <!-- Instagram Metrics Card -->
+                    <div class="metric-card instagram animate__animated animate__fadeIn">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3>Engagement</h3>
+                        </div>
+                        <div class="metric-value">78.3%</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> 5.2%
+                        </div>
+                        <div class="metric-graph">
+                            <canvas id="engagementChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- TikTok Metrics Card -->
+                    <div class="metric-card tiktok animate__animated animate__fadeIn">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fas fa-share-alt"></i>
+                            </div>
+                            <h3>Shares</h3>
+                        </div>
+                        <div class="metric-value">12.4K</div>
+                        <div class="metric-change negative">
+                            <i class="fas fa-arrow-down"></i> 3.1%
+                        </div>
+                        <div class="metric-graph">
+                            <canvas id="sharesChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Twitter Metrics Card -->
+                    <div class="metric-card twitter animate__animated animate__fadeIn">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fas fa-retweet"></i>
+                            </div>
+                            <h3>Retweets</h3>
+                        </div>
+                        <div class="metric-value">8.7K</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i> 7.8%
+                        </div>
+                        <div class="metric-graph">
+                            <canvas id="retweetsChart"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="features" class="features">
-            <div class="container">
-                <h2>Why Choose TuroTags?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">🚀</div>
-                        <h4>Multi-Platform Support</h4>
-                        <p>Generate optimized tags for YouTube, Instagram, and TikTok all in one place.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <h4>Niche-Specific Tags</h4>
-                        <p>Get tags tailored to your specific content niche for better targeting.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <h4>AI-Powered Suggestions</h4>
-                        <p>Our advanced AI analyzes trends to give you the most effective tags.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h4>Performance Optimized</h4>
-                        <p>Tags are selected based on engagement data to maximize your reach.</p>
+            <section class="content-performance">
+                <div class="performance-header">
+                    <h2>Top Performing Content</h2>
+                    <div class="time-filter">
+                        <select id="timeRange">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-        </section>
+                
+                <div class="content-grid">
+                    <!-- Content Card 1 -->
+                    <div class="content-card">
+                        <div class="content-thumbnail youtube">
+                            <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Video thumbnail">
+                            <div class="platform-badge">
+                                <i class="fab fa-youtube"></i>
+                            </div>
+                        </div>
+                        <div class="content-details">
+                            <h3 class="content-title">How to Grow Your Channel in 2023</h3>
+                            <div class="content-metrics">
+                                <span class="metric"><i class="fas fa-eye"></i> 124K</span>
+                                <span class="metric"><i class="fas fa-thumbs-up"></i> 8.2K</span>
+                                <span class="metric"><i class="fas fa-comment"></i> 1.4K</span>
+                            </div>
+                            <div class="content-cta">
+                                <button class="view-btn">View Analytics</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content Card 2 -->
+                    <div class="content-card">
+                        <div class="content-thumbnail instagram">
+                            <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868" alt="Instagram post">
+                            <div class="platform-badge">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                        </div>
+                        <div class="content-details">
+                            <h3 class="content-title">Behind the Scenes: Product Shoot</h3>
+                            <div class="content-metrics">
+                                <span class="metric"><i class="fas fa-heart"></i> 24.7K</span>
+                                <span class="metric"><i class="fas fa-comment"></i> 892</span>
+                                <span class="metric"><i class="fas fa-share"></i> 1.2K</span>
+                            </div>
+                            <div class="content-cta">
+                                <button class="view-btn">View Analytics</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content Card 3 -->
+                    <div class="content-card">
+                        <div class="content-thumbnail tiktok">
+                            <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0" alt="TikTok video">
+                            <div class="platform-badge">
+                                <i class="fab fa-tiktok"></i>
+                            </div>
+                        </div>
+                        <div class="content-details">
+                            <h3 class="content-title">Day in the Life Challenge</h3>
+                            <div class="content-metrics">
+                                <span class="metric"><i class="fas fa-play"></i> 2.1M</span>
+                                <span class="metric"><i class="fas fa-heart"></i> 347K</span>
+                                <span class="metric"><i class="fas fa-comment"></i> 8.4K</span>
+                            </div>
+                            <div class="content-cta">
+                                <button class="view-btn">View Analytics</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
 
-        <section id="how-it-works" class="how-it-works">
-            <div class="container">
-                <h2>How It Works</h2>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <p>Enter your content details and select your platform</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <p>Our AI analyzes your content and current trends</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <p>Get optimized tags and hashtags tailored for your content</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <p>Copy and paste to boost your visibility and growth</p>
-                    </div>
+        <aside class="dashboard-sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-video"></i>
+                            <span>Content</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-users"></i>
+                            <span>Audience</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-bell"></i>
+                            <span>Alerts</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="upgrade-card">
+                    <h3>Pro Analytics</h3>
+                    <p>Unlock advanced metrics and insights</p>
+                    <button class="upgrade-btn">Upgrade Now</button>
                 </div>
             </div>
-        </section>
-    </main>
+        </aside>
+    </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="logo-container">
-                        <img src="assets/thunder-logo.svg" alt="TuroTags Logo" class="logo">
-                        <h3>Turo<span>Tags</span></h3>
-                    </div>
-                    <p>Helping creators grow faster since 2024</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="https://ko-fi.com/ytseo1509" target="_blank">Support Us</a>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2024 TuroTags. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
