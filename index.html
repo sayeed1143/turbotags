@@ -3,68 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Updated Title for better SEO -->
-    <title>TuroTags | AI Tags & Hashtags Generator for YouTube, Instagram, TikTok</title>
-    <meta name="description" content="Generate optimal, AI-powered tags and hashtags for YouTube, Instagram, and TikTok to boost your visibility, reach, and engagement. Grow faster with TuroTags!">
-    
-    <!-- Canonical URL (IMPORTANT: Replace with your actual deployed URL) -->
-    <link rel="canonical" href="https://turbotags.vercel.app/"> 
-
-    <!-- Favicon (assuming it's in assets/images/ or assets/ directly) -->
+    <title>TuroTags | Grow Faster on YouTube, Instagram & TikTok</title>
+    <meta name="description" content="Generate optimal tags and hashtags for YouTube, Instagram, and TikTok to boost your visibility and growth.">
+    <link rel="stylesheet" href="style.css">
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-    
-    <!-- Stylesheet - Moved to assets/css for better organization -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    
-    <!-- Confetti Library for delightful feedback -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
-    <!-- Schema Markup for SEO (IMPORTANT: Replace YOUR_WEBSITE_URL_HERE) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "TuroTags",
-      "url": "https://turbotags.vercel.app/",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://turbotags.vercel.app/?title={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "TuroTags AI Tags & Hashtags Generator",
-      "operatingSystem": "Web",
-      "applicationCategory": "Utilities",
-      "url": "https://turbotags.vercel.app/",
-      "description": "Generate optimal tags and hashtags for YouTube, Instagram, and TikTok to boost your visibility and growth.",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9", // Increased rating for better impression
-        "reviewCount": "250"  // Increased review count
-      }
-    }
-    </script>
 </head>
 <body>
     <header>
         <div class="container">
             <div class="logo-container">
                 <img src="assets/thunder-logo.svg" alt="TuroTags Logo" class="logo">
-                <!-- Changed h1 to span for better SEO hierarchy (main h1 is now in Hero) -->
-                <span class="site-title">Turo<span>Tags</span></span>
+                <h1>Turo<span>Tags</span></h1>
             </div>
             <nav>
                 <a href="#features">Features</a>
@@ -78,8 +28,7 @@
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <!-- Changed h2 to h1 for primary page heading SEO -->
-                    <h1 class="hero-main-heading">Boost Your Social Media Growth</h1>
+                    <h2>Boost Your Social Media Growth</h2>
                     <p class="subtitle">Generate the perfect tags and hashtags for YouTube, Instagram, and TikTok to maximize your reach and engagement.</p>
                     
                     <div class="platform-tabs">
@@ -111,8 +60,6 @@
                         
                         <button id="generate-btn" class="cta-btn">Generate Tags</button>
                         <div class="loading-spinner hidden"></div>
-                        <!-- Added a div for API feedback messages -->
-                        <div id="api-feedback" class="api-feedback hidden"></div>
                     </div>
                 </div>
             </div>
@@ -155,14 +102,13 @@
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">⚡</div>
-                        <!-- Updated text for AI-powered feature -->
-                        <h4>Smart AI Suggestions</h4>
-                        <p>Our advanced AI analyzes trends to give you the most effective tags and hashtags.</p>
+                        <h4>AI-Powered Suggestions</h4>
+                        <p>Our advanced AI analyzes trends to give you the most effective tags.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">📈</div> <!-- Changed icon for performance -->
-                        <h4>Boost Visibility</h4>
-                        <p>Tags are selected based on engagement data to maximize your reach and discoverability.</p>
+                        <div class="feature-icon">📊</div>
+                        <h4>Performance Optimized</h4>
+                        <p>Tags are selected based on engagement data to maximize your reach.</p>
                     </div>
                 </div>
             </div>
@@ -204,9 +150,8 @@
                     <p>Helping creators grow faster since 2024</p>
                 </div>
                 <div class="footer-links">
-                    <!-- Updated hrefs for Privacy Policy and Terms of Service -->
-                    <a href="privacy.html">Privacy Policy</a>
-                    <a href="terms.html">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
                     <a href="https://ko-fi.com/ytseo1509" target="_blank">Support Us</a>
                 </div>
             </div>
@@ -216,7 +161,6 @@
         </div>
     </footer>
 
-    <!-- Main JavaScript file - Moved to assets/js for better organization -->
-    <script src="assets/js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
