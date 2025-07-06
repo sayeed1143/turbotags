@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TurboTags ⚡ | Boost Your YouTube Growth</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta name="description" content="Generate YouTube tags and hashtags instantly with TurboTags. Boost your YouTube SEO, grow faster, and reach a wider audience.">
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col">
+  <div class="container mx-auto p-4 max-w-5xl flex-1">
+    <header class="text-center mb-10">
+      <img src="logo.png" alt="TurboTags Logo" class="mx-auto w-20 h-20 mb-4">
+      <h1 class="text-4xl font-bold">TurboTags ⚡</h1>
+      <p class="text-gray-400 text-lg">Grow Faster on YouTube with Smart Tags & Hashtags</p>
+    </header>
+
+    <main class="bg-gray-800 p-8 rounded-2xl shadow-lg relative overflow-hidden">
+      <div class="animated-background"></div>
+      <input type="text" id="keywordInput" placeholder="Enter your video topic..." class="w-full p-4 rounded-lg mb-5 text-black">
+      <button id="generateBtn" class="w-full bg-yellow-400 text-black font-semibold py-3 rounded-lg mb-8 hover:bg-yellow-300 transition">Generate 🚀</button>
+
+      <div id="nicheSection" class="hidden mb-8">
+        <h3 class="text-xl font-semibold mb-2">Niche Detected:</h3>
+        <p id="nicheResult" class="text-yellow-300 text-lg"></p>
+      </div>
+
+      <div class="results grid md:grid-cols-2 gap-8 mb-8">
+        <div>
+          <h3 class="text-lg font-semibold mb-3">YouTube Tags (SEO)</h3>
+          <textarea id="tagsOutput" readonly class="w-full p-4 rounded-lg text-black mb-3 resize-none h-32"></textarea>
+          <button class="copyBtn bg-blue-500 text-white py-2 px-5 rounded-lg hover:bg-blue-400 transition" onclick="copyText('tagsOutput')">Copy Tags 📋</button>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold mb-3">YouTube Hashtags</h3>
+          <textarea id="hashtagsOutput" readonly class="w-full p-4 rounded-lg text-black mb-3 resize-none h-32"></textarea>
+          <button class="copyBtn bg-blue-500 text-white py-2 px-5 rounded-lg hover:bg-blue-400 transition" onclick="copyText('hashtagsOutput')">Copy Hashtags 📋</button>
+        </div>
+      </div>
+
+      <button id="clearBtn" class="w-full bg-red-500 text-white font-semibold py-3 rounded-lg hover:bg-red-400 transition">Clear All 🧹</button>
+
+      <div class="ads-placeholder mt-10 mb-6 bg-gray-700 rounded-lg p-6 text-center">
+        <p class="text-gray-300">[ Google Ad Placeholder ]</p>
+      </div>
+
+      <div class="support-section text-center mb-6">
+        <p class="mb-2">Enjoying TurboTags? Support us on Ko-fi ☕</p>
+        <a href="https://ko-fi.com" target="_blank" class="inline-block bg-pink-500 text-white py-2 px-4 rounded-lg hover:bg-pink-400">Support on Ko-fi</a>
+      </div>
+
+      <div class="seo-tips text-sm text-gray-400">
+        <h4 class="text-white font-semibold mb-2">How to Get More Views on YouTube:</h4>
+        <ul class="list-disc list-inside">
+          <li>How to get views on YouTube fast</li>
+          <li>Grow on YouTube</li>
+          <li>How to start a YouTube channel</li>
+          <li>How to get views on YouTube Shorts</li>
+          <li>Get views without subscribers</li>
+          <li>Get views without making videos</li>
+        </ul>
+      </div>
+    </main>
+
+    <footer class="text-center mt-12 text-gray-500 text-sm">
+      <p>Made with ❤️ by TurboTags ⚡</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
