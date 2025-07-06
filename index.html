@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TagMaster | Smarter Tags. Better Reach. Faster Growth.</title>
+  <meta name="description" content="Generate viral tags and hashtags for YouTube, Instagram, and TikTok instantly. Boost your reach with AI-powered tag generation." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+</head>
+<body>
+  <header class="hero">
+    <h1>⚡ TagMaster</h1>
+    <p>Smarter Tags. Better Reach. Faster Growth.</p>
+  </header>
+
+  <main>
+    <section class="generator">
+      <select id="platform">
+        <option value="youtube">YouTube</option>
+        <option value="instagram">Instagram</option>
+        <option value="tiktok">TikTok</option>
+      </select>
+      <input type="text" id="keywords" placeholder="Enter keywords (comma separated)" />
+      <button onclick="generateTags()">🚀 Generate</button>
+      <button onclick="resetFields()">♻️ Reset</button>
+      <div class="output">
+        <p><strong>#Tags:</strong> <span id="hashtags"></span></p>
+        <button onclick="copyHashTags()">📋 Copy #Tags</button>
+        <p id="videotags-block"><strong>Video Tags:</strong> <span id="videotags"></span></p>
+        <button onclick="copyVideoTags()">📋 Copy Video Tags</button>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2>🚀 Boost Reach</h2>
+      <p>Generate optimized tags & hashtags to grow faster on every platform.</p>
+      <h2>⚡ Instant Results</h2>
+      <p>One-click tag generation with AI-driven suggestions and fast copy features.</p>
+    </section>
+
+    <section class="about">
+      <h2>About TagMaster</h2>
+      <p>TagMaster helps creators generate SEO-friendly tags and hashtags for YouTube, Instagram, and TikTok—fast, simple, and effective.</p>
+    </section>
+
+    <section class="seo">
+      <h2>Why SEO Matters</h2>
+      <p>Good SEO helps your content get discovered and grow your audience organically through optimized tags and hashtags.</p>
+    </section>
+
+    <section class="support">
+      <a href="https://ko-fi.com/" target="_blank">☕ Support Us on Ko-fi</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 TagMaster. All rights reserved.</p>
+    <nav>
+      <a href="#">About</a> • <a href="#">Privacy</a> • <a href="#">Contact</a>
+    </nav>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
