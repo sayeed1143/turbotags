@@ -5,61 +5,145 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TagMaster | Smarter Tags. Better Reach. Faster Growth.</title>
   <meta name="description" content="Generate viral tags and hashtags for YouTube, Instagram, and TikTok instantly. Boost your reach with AI-powered tag generation." />
+  <meta name="keywords" content="hashtags, tags, youtube, instagram, tiktok, social media, SEO, viral, growth" />
+  <meta name="author" content="TagMaster" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tagmaster.app/" />
+  <meta property="og:title" content="TagMaster | Smarter Tags. Better Reach. Faster Growth." />
+  <meta property="og:description" content="Generate viral tags and hashtags for YouTube, Instagram, and TikTok instantly. Boost your reach with AI-powered tag generation." />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://tagmaster.app/" />
+  <meta property="twitter:title" content="TagMaster | Smarter Tags. Better Reach. Faster Growth." />
+  <meta property="twitter:description" content="Generate viral tags and hashtags for YouTube, Instagram, and TikTok instantly. Boost your reach with AI-powered tag generation." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
   <header class="hero">
-    <h1>⚡ TagMaster</h1>
-    <p>Smarter Tags. Better Reach. Faster Growth.</p>
+    <div class="container">
+      <h1>⚡ TagMaster</h1>
+      <p>Smarter Tags. Better Reach. Faster Growth.</p>
+    </div>
   </header>
 
   <main>
     <section class="generator">
-      <select id="platform">
-        <option value="youtube">YouTube</option>
-        <option value="instagram">Instagram</option>
-        <option value="tiktok">TikTok</option>
-      </select>
-      <input type="text" id="keywords" placeholder="Enter keywords (comma separated)" />
-      <button onclick="generateTags()">🚀 Generate</button>
-      <button onclick="resetFields()">♻️ Reset</button>
-      <div class="output">
-        <p><strong>#Tags:</strong> <span id="hashtags"></span></p>
-        <button onclick="copyHashTags()">📋 Copy #Tags</button>
-        <p id="videotags-block"><strong>Video Tags:</strong> <span id="videotags"></span></p>
-        <button onclick="copyVideoTags()">📋 Copy Video Tags</button>
+      <div class="input-group">
+        <select id="platform" aria-label="Select platform">
+          <option value="youtube">📺 YouTube</option>
+          <option value="instagram">📸 Instagram</option>
+          <option value="tiktok">🎵 TikTok</option>
+          <option value="twitter">🐦 Twitter/X</option>
+          <option value="linkedin">💼 LinkedIn</option>
+        </select>
+        <input 
+          type="text" 
+          id="keywords" 
+          placeholder="Enter keywords (comma separated)" 
+          aria-label="Enter keywords for tag generation"
+          autocomplete="off"
+        />
+      </div>
+      
+      <div class="button-group">
+        <button class="btn btn-primary" onclick="generateTags()" aria-label="Generate tags">
+          <span>🚀</span> Generate Tags
+        </button>
+        <button class="btn btn-secondary" onclick="resetFields()" aria-label="Reset all fields">
+          <span>♻️</span> Reset
+        </button>
+      </div>
+      
+      <div class="output" id="output">
+        <div class="output-item" id="hashtags-section">
+          <div class="output-label">📱 Hashtags</div>
+          <div class="output-content" id="hashtags"></div>
+          <div class="character-count" id="hashtags-count"></div>
+          <button class="btn btn-copy" onclick="copyHashTags()" aria-label="Copy hashtags">
+            <span>📋</span> Copy Hashtags
+          </button>
+        </div>
+        
+        <div class="output-item" id="videotags-section" style="display: none;">
+          <div class="output-label">🎬 Video Tags</div>
+          <div class="output-content" id="videotags"></div>
+          <div class="character-count" id="videotags-count"></div>
+          <button class="btn btn-copy" onclick="copyVideoTags()" aria-label="Copy video tags">
+            <span>📋</span> Copy Video Tags
+          </button>
+        </div>
+        
+        <div class="output-item" id="suggestions-section">
+          <div class="output-label">💡 Platform Tips</div>
+          <div class="output-content" id="platform-tips"></div>
+        </div>
       </div>
     </section>
 
-    <section class="features">
-      <h2>🚀 Boost Reach</h2>
-      <p>Generate optimized tags & hashtags to grow faster on every platform.</p>
-      <h2>⚡ Instant Results</h2>
-      <p>One-click tag generation with AI-driven suggestions and fast copy features.</p>
-    </section>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🚀</span>
+        <h3>Boost Reach</h3>
+        <p>Generate optimized tags & hashtags to grow faster on every platform with smart AI suggestions.</p>
+      </div>
+      
+      <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <h3>Instant Results</h3>
+        <p>One-click tag generation with lightning-fast results and seamless copy functionality.</p>
+      </div>
+      
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3>Platform Optimized</h3>
+        <p>Tailored suggestions for each platform's specific requirements and character limits.</p>
+      </div>
+      
+      <div class="feature-card">
+        <span class="feature-icon">📊</span>
+        <h3>Smart Analytics</h3>
+        <p>Real-time character counting and platform-specific optimization recommendations.</p>
+      </div>
+    </div>
 
-    <section class="about">
+    <section class="content-section">
       <h2>About TagMaster</h2>
-      <p>TagMaster helps creators generate SEO-friendly tags and hashtags for YouTube, Instagram, and TikTok—fast, simple, and effective.</p>
+      <p>TagMaster is the ultimate tool for content creators who want to maximize their reach across social media platforms. Our intelligent tag generation system helps you create SEO-friendly tags and hashtags for YouTube, Instagram, TikTok, Twitter, and LinkedIn—making your content more discoverable and engaging.</p>
     </section>
 
-    <section class="seo">
+    <section class="content-section">
       <h2>Why SEO Matters</h2>
-      <p>Good SEO helps your content get discovered and grow your audience organically through optimized tags and hashtags.</p>
+      <p>Strategic use of tags and hashtags is crucial for content discovery. Our platform helps you leverage the power of SEO to grow your audience organically, increase engagement, and build a stronger online presence through optimized, trending, and platform-specific tag recommendations.</p>
     </section>
 
     <section class="support">
-      <a href="https://ko-fi.com/" target="_blank">☕ Support Us on Ko-fi</a>
+      <a href="https://ko-fi.com/" target="_blank" rel="noopener noreferrer">
+        <span>☕</span> Support Us on Ko-fi
+      </a>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 TagMaster. All rights reserved.</p>
-    <nav>
-      <a href="#">About</a> • <a href="#">Privacy</a> • <a href="#">Contact</a>
-    </nav>
+    <div class="container">
+      <p>© 2025 TagMaster. All rights reserved.</p>
+      <nav>
+        <a href="#about">About</a> • 
+        <a href="#privacy">Privacy</a> • 
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
   </footer>
+
+  <!-- Notification element for copy feedback -->
+  <div id="notification" class="notification"></div>
 
   <script src="script.js"></script>
 </body>
